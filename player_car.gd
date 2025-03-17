@@ -1,6 +1,10 @@
 extends Node2D
 
 
+#signal button_accelerate
+#signal button_break
+
+
 @export var speed_current = 0
 var speed_max = 5000
 var acceleration = ceili(float(speed_max) / 5.0 / 60.0)
@@ -18,6 +22,11 @@ func _ready():
 	screen_size = get_viewport_rect().size
 	z_track_position = 0
 	$Area2D/AnimatedSprite2D.play("straight")
+	if OS.get_name() == "Android" or OS.get_name() == "Windows":
+		$Button_tilt_acc.visible = true
+		$Button_tilt_acc.disabled = false
+		$Button_tilt_break.visible = true
+		$Button_tilt_break.disabled = false
 
 
 func _process(delta):
@@ -31,11 +40,11 @@ func _process(delta):
 		$Area2D/AnimatedSprite2D.play("left")
 	else:
 		$Area2D/AnimatedSprite2D.play("straight")
-	if Input.is_action_pressed("accelerate"):
+	if Input.is_action_pressed("accelerate") or $Button_tilt_acc.z_index == 1:
 		speed_current += acceleration
 		if speed_current > speed_max:
 			speed_current = speed_max
-	elif Input.is_action_pressed("brake"):
+	elif Input.is_action_pressed("brake") or $Button_tilt_break.z_index == 1:
 		speed_current -= breaking
 		if speed_current < 0:
 			speed_current = 0
@@ -60,3 +69,23 @@ func _process(delta):
 		position.x,
 		-(screen_size.x / 2) + (Track.offroad_lane_width / 2.0),
 		(screen_size.x / 2) - (Track.offroad_lane_width / 2.0))
+
+
+func _on_button_tilt_acc_button_down():
+	# Z Index as a true / false indicator
+	$Button_tilt_acc.z_index = 1
+
+
+func _on_button_tilt_acc_button_up():
+	# Z Index as a true / false indicator
+	$Button_tilt_acc.z_index = 0
+
+
+func _on_button_tilt_break_button_down():
+	# Z Index as a true / false indicator
+	$Button_tilt_break.z_index = 1
+
+
+func _on_button_tilt_break_button_up():
+	# Z Index as a true / false indicator
+	$Button_tilt_break.z_index = 0
