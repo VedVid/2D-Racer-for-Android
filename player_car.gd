@@ -23,14 +23,18 @@ func _process(delta):
 		$Area2D/AnimatedSprite2D.play("left")
 	else:
 		$Area2D/AnimatedSprite2D.play("straight")
-	if Input.is_action_pressed("brake"):
-		speed_current -= 33
-		if speed_current < 0:
-			speed_current = 0
 	if Input.is_action_pressed("accelerate"):
 		speed_current += 17
 		if speed_current > speed_max:
 			speed_current = speed_max
+	elif Input.is_action_pressed("brake"):
+		speed_current -= 33
+		if speed_current < 0:
+			speed_current = 0
+	else:
+		speed_current -= 15
+		if speed_current < 0:
+			speed_current = 0
 
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed_current
