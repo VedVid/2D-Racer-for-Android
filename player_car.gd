@@ -15,10 +15,10 @@ func _ready():
 func _process(delta):
 	var velocity = Vector2.ZERO
 	var grav = Input.get_gravity()
-	if Input.is_action_pressed("steer_right") or grav.x > 0 :
+	if Input.is_action_pressed("steer_right") or grav.x > 2:
 		velocity.x += 1
 		$Area2D/AnimatedSprite2D.play("right")
-	elif Input.is_action_pressed("steer_left") or grav.x < 0:
+	elif Input.is_action_pressed("steer_left") or grav.x < -2:
 		velocity.x -= 1
 		$Area2D/AnimatedSprite2D.play("left")
 	else:
