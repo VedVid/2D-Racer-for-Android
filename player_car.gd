@@ -3,6 +3,9 @@ extends Node2D
 
 @export var speed_current = 0
 var speed_max = 5000
+var acceleration = speed_max / 5 / 60
+var decceleration = speed_max / 3.5 / 60
+var breaking = speed_max / 2.5 / 60
 
 var screen_size = Vector2.ZERO
 
@@ -24,15 +27,15 @@ func _process(delta):
 	else:
 		$Area2D/AnimatedSprite2D.play("straight")
 	if Input.is_action_pressed("accelerate"):
-		speed_current += 17
+		speed_current += acceleration
 		if speed_current > speed_max:
 			speed_current = speed_max
 	elif Input.is_action_pressed("brake"):
-		speed_current -= 33
+		speed_current -= breaking
 		if speed_current < 0:
 			speed_current = 0
 	else:
-		speed_current -= 15
+		speed_current -= decceleration
 		if speed_current < 0:
 			speed_current = 0
 
