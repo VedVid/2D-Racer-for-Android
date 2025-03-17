@@ -6,14 +6,17 @@ var speed_max = 5000
 var acceleration = ceili(float(speed_max) / 5.0 / 60.0)
 var decceleration = ceili(float(speed_max) / 4.0 / 60.0)
 var breaking = ceili(float(speed_max) / 2.5 / 60.0)
-var offroad_decceleration = ceili(float(speed_max) / 3.0 / 60.0)
-var offroad_limit = ceili(float(speed_max) / 4.0 / 60.0)
+var offroad_decceleration = ceili(float(speed_max) / 3.25 / 60.0)
+var offroad_limit = ceili(float(speed_max) / 4.0)
+
+var z_track_position
 
 var screen_size = Vector2.ZERO
 
 
 func _ready():
 	screen_size = get_viewport_rect().size
+	z_track_position = 0
 	$Area2D/AnimatedSprite2D.play("straight")
 
 
@@ -41,10 +44,19 @@ func _process(delta):
 		if speed_current < 0:
 			speed_current = 0
 
+	if ((position.x < -(screen_size.x / 2) + Track.offroad_lane_width or
+		position.x > (screen_size.x / 2) - Track.offroad_lane_width) and
+		speed_current > offroad_limit):
+		speed_current -= offroad_decceleration
+
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed_current
 
+	print(speed_current)
+
 	position += velocity * delta
-	print("x: ", position.x, " y: ", position.y)
-	print("speed: ", speed_current)
-	position.x = clamp(position.x, -(screen_size.x / 2) + 100, (screen_size.x / 2) - 100)
+	z_track_position += speed_current
+	position.x = clamp(
+		position.x,
+		-(screen_size.x / 2) + (Track.offroad_lane_width / 2.0),
+		(screen_size.x / 2) - (Track.offroad_lane_width / 2.0))
