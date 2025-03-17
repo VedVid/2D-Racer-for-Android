@@ -3,9 +3,11 @@ extends Node2D
 
 @export var speed_current = 0
 var speed_max = 5000
-var acceleration = speed_max / 5 / 60
-var decceleration = speed_max / 3.5 / 60
-var breaking = speed_max / 2.5 / 60
+var acceleration = ceili(float(speed_max) / 5.0 / 60.0)
+var decceleration = ceili(float(speed_max) / 4.0 / 60.0)
+var breaking = ceili(float(speed_max) / 2.5 / 60.0)
+var offroad_decceleration = ceili(float(speed_max) / 3.0 / 60.0)
+var offroad_limit = ceili(float(speed_max) / 4.0 / 60.0)
 
 var screen_size = Vector2.ZERO
 
