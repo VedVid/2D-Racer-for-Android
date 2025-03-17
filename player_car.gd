@@ -53,8 +53,8 @@ func _process(delta):
 		if speed_current < 0:
 			speed_current = 0
 
-	if ((position.x < -(screen_size.x / 2) + Track.offroad_lane_width or
-		position.x > (screen_size.x / 2) - Track.offroad_lane_width) and
+	if (($Area2D.position.x < Track.offroad_lane_width or
+		$Area2D.position.x > screen_size.x - Track.offroad_lane_width) and
 		speed_current > offroad_limit):
 		speed_current -= offroad_decceleration
 
@@ -63,12 +63,12 @@ func _process(delta):
 
 	print(speed_current)
 
-	position += velocity * delta
+	$Area2D.position += velocity * delta
 	z_track_position += speed_current
-	position.x = clamp(
-		position.x,
-		-(screen_size.x / 2) + (Track.offroad_lane_width / 2.0),
-		(screen_size.x / 2) - (Track.offroad_lane_width / 2.0))
+	$Area2D.position.x = clamp(
+		$Area2D.position.x,
+		Track.offroad_lane_width / 2.0,
+		screen_size.x - (Track.offroad_lane_width / 2.0))
 
 
 func _on_button_tilt_acc_button_down():
