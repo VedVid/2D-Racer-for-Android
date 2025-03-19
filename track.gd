@@ -20,6 +20,10 @@ func _ready():
 	road_width = screen_size.x - 200
 
 
+func _process(delta):
+	pass
+
+
 func reset_road():
 	segments = []
 
