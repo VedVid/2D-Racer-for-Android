@@ -67,9 +67,9 @@ shape = SubResource("RectangleShape2D_in3s4")
 [node name="Button_tilt_acc" type="Button" parent="."]
 visible = false
 offset_left = 1150.0
-offset_top = 550.0
+offset_top = 500.0
 offset_right = 1210.0
-offset_bottom = 610.0
+offset_bottom = 560.0
 disabled = true
 action_mode = 0
 text = "ACC"
@@ -77,9 +77,9 @@ text = "ACC"
 [node name="Button_tilt_break" type="Button" parent="."]
 visible = false
 offset_left = 70.0
-offset_top = 550.0
+offset_top = 500.0
 offset_right = 130.0
-offset_bottom = 610.0
+offset_bottom = 560.0
 disabled = true
 action_mode = 0
 text = "BREAK"
