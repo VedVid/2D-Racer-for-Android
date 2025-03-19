@@ -1,10 +1,6 @@
 extends Node2D
 
 
-#signal button_accelerate
-#signal button_break
-
-
 @export var speed_current = 0
 var speed_max = 5000
 var acceleration = ceili(float(speed_max) / 5.0 / 60.0)
@@ -22,7 +18,9 @@ func _ready():
 	screen_size = get_viewport_rect().size
 	z_track_position = 0
 	$Area2D/AnimatedSprite2D.play("straight")
+	# Commented line below can be used for debugging or testing touch controls without mobile device.
 	if OS.get_name() == "Android" or OS.get_name() == "Windows":
+	#if OS.get_name() == "Android":
 		$Button_tilt_acc.visible = true
 		$Button_tilt_acc.disabled = false
 		$Button_tilt_break.visible = true
