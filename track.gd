@@ -11,6 +11,7 @@ var segments_amount = 500
 var rumble_length = 3
 var segments = []
 var track_length
+var z_track_position = 0
 
 var screen_size = Vector2.ZERO
 
@@ -18,9 +19,12 @@ var screen_size = Vector2.ZERO
 func _ready():
 	screen_size = get_viewport_rect().size
 	road_width = screen_size.x - 200
+	reset_road()
+	print(segments.size())
 
 
 func _process(delta):
+	var segment = find_segment(z_track_position)
 	pass
 
 

@@ -9,14 +9,13 @@ var breaking = ceili(float(speed_max) / 2.5 / 60.0)
 var offroad_decceleration = ceili(float(speed_max) / 3.25 / 60.0)
 var offroad_limit = ceili(float(speed_max) / 4.0)
 
-var z_track_position
-
 var screen_size = Vector2.ZERO
 
 
 func _ready():
 	screen_size = get_viewport_rect().size
-	z_track_position = 0
+	Track.z_track_position = 0
+	print(Track.z_track_position)
 	$Area2D/AnimatedSprite2D.play("straight")
 	# Commented line below can be used for debugging or testing touch controls without mobile device.
 	if OS.get_name() == "Android" or OS.get_name() == "Windows":
@@ -59,10 +58,10 @@ func _process(delta):
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed_current
 
-	print(speed_current)
+	#print(speed_current)
 
 	$Area2D.position += velocity * delta
-	z_track_position += speed_current
+	Track.z_track_position += speed_current
 	$Area2D.position.x = clamp(
 		$Area2D.position.x,
 		Track.offroad_lane_width / 2.0,
