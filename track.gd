@@ -24,7 +24,7 @@ func _ready():
 
 
 func _process(delta):
-	var segment = find_segment(z_track_position)
+	var base_segment = find_segment(z_track_position)
 	pass
 
 
@@ -32,14 +32,23 @@ func reset_road():
 	segments = []
 
 	for i in segments_amount:
-		segments.append(
-			{
+		var new_segment = {
 				index = i,
-				p1 = {world = {z = i * segment_length}, camera = {}, screen = {}},
-				p2 = {world = {z = (i + 1) * segment_length}, camera = {}, screen = {}},
+				p1 = {
+					world = Vector3.ZERO,
+					camera = Vector3.ZERO,
+					screen = Vector3.ZERO,
+				},
+				p2 = {
+					world = Vector3.ZERO,
+					camera = Vector3.ZERO,
+					screen = Vector3.ZERO,
+				},
 				color = color_dark if floori(float(i)/rumble_length)%2 == 0 else color_light
 			}
-		)
+		new_segment.p1.world.z = i * segment_length
+		new_segment.p2.world.z = (i + 1) * segment_length
+		segments.append(new_segment)
 
 	track_length = segments.size() * segment_length
 
