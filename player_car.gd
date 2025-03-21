@@ -59,7 +59,9 @@ func _process(delta):
 		velocity = velocity.normalized() * speed_current
 
 	#print(speed_current)
-
+	# This is just example, the backgrounds should not be moved
+	var horizon_far = get_node("../Track/HorizonFar")
+	horizon_far.position += velocity * delta
 	$Area2D.position += velocity * delta
 	Track.z_track_position += speed_current
 	$Area2D.position.x = clamp(
