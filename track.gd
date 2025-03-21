@@ -38,11 +38,13 @@ func reset_road():
 					world = Vector3.ZERO,
 					camera = Vector3.ZERO,
 					screen = Vector3.ZERO,
+					screen_scale = 0,
 				},
 				p2 = {
 					world = Vector3.ZERO,
 					camera = Vector3.ZERO,
 					screen = Vector3.ZERO,
+					screen_scale = 0,
 				},
 				color = color_dark if floori(float(i)/rumble_length)%2 == 0 else color_light
 			}
@@ -55,3 +57,11 @@ func reset_road():
 
 func find_segment(z):
 	return segments[floori(z / segment_length) % segments.size()]
+
+
+func project(p, camera_position, camera_depth):
+	p.camera = p.world - camera_position
+	p.screen_scale = camera_depth/p.camera.z
+	p.screen.x     = round((screen_size.y / 2) + (p.screen_scale * p.camera.x  * screen_size.x / 2));
+	p.screen.y     = round((screen_size.y / 2) - (p.screen_scale * p.camera.y  * screen_size.x / 2));
+	p.screen.w     = round(p.screen_scale * road_width  * screen_size.x / 2);
