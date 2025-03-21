@@ -13,6 +13,11 @@ var segments = []
 var track_length
 var z_track_position = 0
 
+var field_of_view = 100
+var camera_depth = 1 / tan((field_of_view / 2.0) * PI / 180)
+var camera_height = 1000
+var draw_distance = 300
+
 var screen_size = Vector2.ZERO
 
 
@@ -25,7 +30,27 @@ func _ready():
 
 func _process(delta):
 	var base_segment = find_segment(z_track_position)
-	pass
+	var max_y = screen_size.y
+	var segment
+	var player_x_rel = get_node("../../PlayerCar/XPos").position.x
+	var camera_position = Vector3.ZERO
+
+	for i in draw_distance:
+		segment = segments[(base_segment.index + i) % segments.size()]
+
+		camera_position.x = player_x_rel
+		camera_position.y = camera_height
+		camera_position.z = z_track_position
+
+		project(segment.p1, camera_position)
+		project(segment.p2, camera_position)
+
+		if ((segment.p1.camera.z <= camera_depth) || (segment.p2.screen.y >= max_y)):
+			continue;
+
+		# render_segment
+
+		max_y = segment.p2.screen.y
 
 
 func reset_road():
@@ -59,7 +84,7 @@ func find_segment(z):
 	return segments[floori(z / segment_length) % segments.size()]
 
 
-func project(p, camera_position, camera_depth):
+func project(p, camera_position):
 	p.camera = p.world - camera_position
 	p.screen_scale = camera_depth/p.camera.z
 	p.screen.x     = round((screen_size.y / 2) + (p.screen_scale * p.camera.x  * screen_size.x / 2));

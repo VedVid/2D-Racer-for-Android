@@ -62,10 +62,10 @@ func _process(delta):
 	# This is just example, the backgrounds should not be moved
 	var horizon_far = get_node("../Track/HorizonFar")
 	horizon_far.position += velocity * delta
-	$Area2D.position += velocity * delta
+	$XPos.position += velocity * delta
 	Track.z_track_position += speed_current
-	$Area2D.position.x = clamp(
-		$Area2D.position.x,
+	$XPos.position.x = clamp(
+		$XPos.position.x,
 		Track.offroad_lane_width / 2.0,
 		screen_size.x - (Track.offroad_lane_width / 2.0))
 
