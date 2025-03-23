@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Track="*res://track.gd"
+Globals="*res://globals.gd"
 
 [display]
 

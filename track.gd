@@ -2,7 +2,6 @@ extends Node2D
 
 
 @export var road_width: int
-@export var offroad_lane_width = 200
 var color_dark = Color.BEIGE
 var color_light = Color.ANTIQUE_WHITE
 var lanes = 3
@@ -11,7 +10,6 @@ var segments_amount = 500
 var rumble_length = 3
 var segments = []
 var track_length
-var z_track_position = 0
 
 var field_of_view = 100
 var camera_depth = 1 / tan((field_of_view / 2.0) * PI / 180)
@@ -25,14 +23,14 @@ func _ready():
 	screen_size = get_viewport_rect().size
 	road_width = screen_size.x - 200
 	reset_road()
-	print(segments.size())
 
 
 func _process(delta):
-	var base_segment = find_segment(z_track_position)
+	var base_segment = find_segment(Globals.z_track_position)
 	var max_y = screen_size.y
 	var segment
-	var player_x_rel = get_node("../../PlayerCar/XPos").position.x
+	get_parent().print_tree_pretty()
+	var player_x_rel = get_node("/root/Main/PlayerCar/XPos").position.x
 	var camera_position = Vector3.ZERO
 
 	for i in draw_distance:
@@ -40,7 +38,7 @@ func _process(delta):
 
 		camera_position.x = player_x_rel
 		camera_position.y = camera_height
-		camera_position.z = z_track_position
+		camera_position.z = Globals.z_track_position
 
 		project(segment.p1, camera_position)
 		project(segment.p2, camera_position)
@@ -89,4 +87,4 @@ func project(p, camera_position):
 	p.screen_scale = camera_depth/p.camera.z
 	p.screen.x     = round((screen_size.y / 2) + (p.screen_scale * p.camera.x  * screen_size.x / 2));
 	p.screen.y     = round((screen_size.y / 2) - (p.screen_scale * p.camera.y  * screen_size.x / 2));
-	p.screen.w     = round(p.screen_scale * road_width  * screen_size.x / 2);
+	p.screen.z     = round(p.screen_scale * road_width  * screen_size.x / 2);

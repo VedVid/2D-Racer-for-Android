@@ -1,11 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://c14yp4ycrqnm5"]
+[gd_scene load_steps=3 format=3 uid="uid://c14yp4ycrqnm5"]
 
 [ext_resource type="PackedScene" uid="uid://cgpqkdh7s0w6j" path="res://track.tscn" id="1_0xm2m"]
-[ext_resource type="Script" uid="uid://0kgva7t5hcrk" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="PackedScene" uid="uid://clwv5pvglybtp" path="res://player_car.tscn" id="2_h2yge"]
 
 [node name="Main" type="Node"]
-script = ExtResource("1_h2yge")
 
 [node name="Track" parent="." instance=ExtResource("1_0xm2m")]
 metadata/_edit_group_ = true

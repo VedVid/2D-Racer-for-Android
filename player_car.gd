@@ -14,8 +14,7 @@ var screen_size = Vector2.ZERO
 
 func _ready():
 	screen_size = get_viewport_rect().size
-	Track.z_track_position = 0
-	print(Track.z_track_position)
+	Globals.z_track_position = 0
 	$Area2D/AnimatedSprite2D.play("straight")
 	# Commented line below can be used for debugging or testing touch controls without mobile device.
 	if OS.get_name() == "Android" or OS.get_name() == "Windows":
@@ -50,8 +49,8 @@ func _process(delta):
 		if speed_current < 0:
 			speed_current = 0
 
-	if (($Area2D.position.x < Track.offroad_lane_width or
-		$Area2D.position.x > screen_size.x - Track.offroad_lane_width) and
+	if (($Area2D.position.x < Globals.offroad_lane_width or
+		$Area2D.position.x > screen_size.x - Globals.offroad_lane_width) and
 		speed_current > offroad_limit):
 		speed_current -= offroad_decceleration
 
@@ -63,11 +62,11 @@ func _process(delta):
 	var horizon_far = get_node("../Track/HorizonFar")
 	horizon_far.position += velocity * delta
 	$XPos.position += velocity * delta
-	Track.z_track_position += speed_current
+	Globals.z_track_position += speed_current
 	$XPos.position.x = clamp(
 		$XPos.position.x,
-		Track.offroad_lane_width / 2.0,
-		screen_size.x - (Track.offroad_lane_width / 2.0))
+		Globals.offroad_lane_width / 2.0,
+		screen_size.x - (Globals.offroad_lane_width / 2.0))
 
 
 func _on_button_tilt_acc_button_down():
