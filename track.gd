@@ -37,7 +37,7 @@ func _ready():
 	reset_road()
 
 
-func _process(delta):
+func _draw():
 	var base_segment = find_segment(Globals.z_track_position)
 	var max_y = screen_size.y
 	var segment
@@ -58,9 +58,24 @@ func _process(delta):
 		if ((segment.p1.camera.z <= camera_depth) || (segment.p2.screen.y >= max_y)):
 			continue;
 
-		# render_segment
+		render_segment(
+			road_width,
+			lanes,
+			segment.p1.screen.x,
+			segment.p1.screen.y,
+			segment.p1.screen.z,
+			segment.p2.screen.x,
+			segment.p2.screen.y,
+			segment.p2.screen.z,
+			segment.color,
+			null
+		)
 
 		max_y = segment.p2.screen.y
+
+
+func _process(delta):
+	queue_redraw()
 
 
 func reset_road():
@@ -102,7 +117,7 @@ func project(p, camera_position):
 	p.screen.z     = round(p.screen_scale * road_width  * screen_size.x / 2);
 
 
-func render_segment(width, lanes, x1, y1, w1, x2, y2, w2, fog, colors):
+func render_segment(width, lanes, x1, y1, w1, x2, y2, w2, colors, fog):
 	var r1 = rumble_width(w1, lanes)
 	var r2 = rumble_width(w2, lanes)
 	var l1 = lane_marker_width(w1, lanes)
@@ -130,21 +145,21 @@ func render_segment(width, lanes, x1, y1, w1, x2, y2, w2, fog, colors):
 		lane_x1 += lane_w1
 		lane_x2 += lane_w2
 
-	render_fog(0, y1, width, y2-y1, fog)
+	#render_fog(0, y1, width, y2-y1, fog)
 
 
 func rumble_width(projected_road_width, lanes):
-	projected_road_width / max(6, 2 * lanes)
+	return projected_road_width / max(6, 2 * lanes)
 
 
 func lane_marker_width(projected_road_width, lanes):
-	projected_road_width / max(32, 8 * lanes)
+	return projected_road_width / max(32, 8 * lanes)
 
 
 func render_polygon(x1, y1, x2, y2, x3, y3, x4, y4, color):
-	var points = [Vector2(100,100), Vector2(200,100), Vector2(200,200),Vector2(100,200)]
-	# It should take PacketVector2Array, PacketColorArraY
-	draw_polygon(points, color)
+	var points: PackedVector2Array = [Vector2(100,100), Vector2(200,100), Vector2(200,200),Vector2(100,200)]
+	var colors: PackedColorArray = [color]
+	draw_polygon(points, colors)
 
 
 func render_fog(x, y, w, h, fog):
