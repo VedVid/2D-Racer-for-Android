@@ -2,8 +2,18 @@ extends Node2D
 
 
 @export var road_width: int
-var color_dark = Color.BEIGE
-var color_light = Color.ANTIQUE_WHITE
+var colors_light = {
+	"road": Color.ANTIQUE_WHITE,
+	"grass": Color.CHARTREUSE,
+	"rumble": Color.AZURE,
+	"lane": Color.CORNSILK
+}
+var colors_dark = {
+	"road": Color.BLANCHED_ALMOND,
+	"grass": Color.DARK_GREEN,
+	"rumble": Color.FIREBRICK,
+	"lane": Color.BLANCHED_ALMOND
+}
 var lanes = 3
 var segment_length = 200
 var segments_amount = 500
@@ -69,7 +79,7 @@ func reset_road():
 					screen = Vector3.ZERO,
 					screen_scale = 0,
 				},
-				color = color_dark if floori(float(i)/rumble_length)%2 == 0 else color_light
+				color = colors_dark if floori(float(i)/rumble_length)%2 == 0 else colors_light
 			}
 		new_segment.p1.world.z = i * segment_length
 		new_segment.p2.world.z = (i + 1) * segment_length
@@ -88,3 +98,34 @@ func project(p, camera_position):
 	p.screen.x     = round((screen_size.y / 2) + (p.screen_scale * p.camera.x  * screen_size.x / 2));
 	p.screen.y     = round((screen_size.y / 2) - (p.screen_scale * p.camera.y  * screen_size.x / 2));
 	p.screen.z     = round(p.screen_scale * road_width  * screen_size.x / 2);
+
+
+func render_segment(width, lanes, x1, y1, w1, x2, y2, w2, fog, colors):
+	var r1 = rumble_width(w1, lanes)
+	var r2 = rumble_width(w2, lanes)
+	var l1 = lane_marker_width(w1, lanes)
+	var l2 = lane_marker_width(w2, lanes)
+
+	var lane_w1
+	var lane_w2
+	var lane_x1
+	var lane_x2
+
+	var rect = Rect2(0, y2, width, y1-y2)
+	draw_rect(rect, colors.grass)
+
+	render_polygon(x1-w1-r1, y1, x1-w1, y1, x2-w2, y2, x2-w2-r2, y2, colors.rumble);
+	render_polygon(x1+w1+r1, y1, x1+w1, y1, x2+w2, y2, x2+w2+r2, y2, colors.rumble);
+	render_polygon(x1-w1, y1, x1+w1, y1, x2+w2, y2, x2-w2, y2, colors.road);
+
+	lane_w1 = w1 * 2 / lanes;
+	lane_w2 = w2 * 2 / lanes;
+	lane_x1 = x1 - w1 + lane_w1;
+	lane_x2 = x2 - w2 + lane_w2;
+
+	for lane in lanes:
+		render_polygon(lanex1-l1/2, y1, lanex1+l1/2, y1, lanex2+l2/2, y2, lanex2-l2/2, y2, colors.lane)
+		lane_x1 += lane_w1
+		lane_x2 += lane_w2
+
+	render_fog(0, y1, width, y2-y1, fog)
