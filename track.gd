@@ -1,7 +1,6 @@
 extends Node2D
 
 
-@export var road_width: int
 var colors_light = {
 	"road": Color.ANTIQUE_WHITE,
 	"grass": Color.CHARTREUSE,
@@ -14,6 +13,9 @@ var colors_dark = {
 	"rumble": Color.FIREBRICK,
 	"lane": Color.BLANCHED_ALMOND
 }
+var color_fog = Color.DARK_GRAY
+
+var road_width: int
 var lanes = 3
 var segment_length = 200
 var segments_amount = 500
@@ -135,3 +137,9 @@ func render_polygon(x1, y1, x2, y2, x3, y3, x4, y4, color):
 	var points = [Vector2(100,100), Vector2(200,100), Vector2(200,200),Vector2(100,200)]
 	# It should take PacketVector2Array, PacketColorArraY
 	draw_polygon(points, color)
+
+
+func render_fog(x, y, w, h, fog):
+	if fog < 1:
+		var fog_color = Color(color_fog.r, color_fog.g, color_fog.b, (1 - fog))
+		draw_rect(Rect2(x, y, w, h), fog_color)
