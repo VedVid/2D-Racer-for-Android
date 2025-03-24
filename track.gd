@@ -124,8 +124,14 @@ func render_segment(width, lanes, x1, y1, w1, x2, y2, w2, fog, colors):
 	lane_x2 = x2 - w2 + lane_w2;
 
 	for lane in lanes:
-		render_polygon(lanex1-l1/2, y1, lanex1+l1/2, y1, lanex2+l2/2, y2, lanex2-l2/2, y2, colors.lane)
+		render_polygon(lane_x1-l1/2, y1, lane_x1+l1/2, y1, lane_x2+l2/2, y2, lane_x2-l2/2, y2, colors.lane)
 		lane_x1 += lane_w1
 		lane_x2 += lane_w2
 
 	render_fog(0, y1, width, y2-y1, fog)
+
+
+func render_polygon(x1, y1, x2, y2, x3, y3, x4, y4, color):
+	var points = [Vector2(100,100), Vector2(200,100), Vector2(200,200),Vector2(100,200)]
+	# It should take PacketVector2Array, PacketColorArraY
+	draw_polygon(points, color)
