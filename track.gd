@@ -133,6 +133,14 @@ func render_segment(width, lanes, x1, y1, w1, x2, y2, w2, fog, colors):
 	render_fog(0, y1, width, y2-y1, fog)
 
 
+func rumble_width(projected_road_width, lanes):
+	projected_road_width / max(6, 2 * lanes)
+
+
+func lane_marker_width(projected_road_width, lanes):
+	projected_road_width / max(32, 8 * lanes)
+
+
 func render_polygon(x1, y1, x2, y2, x3, y3, x4, y4, color):
 	var points = [Vector2(100,100), Vector2(200,100), Vector2(200,200),Vector2(100,200)]
 	# It should take PacketVector2Array, PacketColorArraY
