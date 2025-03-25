@@ -18,7 +18,7 @@ var color_fog = Color.DARK_GRAY
 var road_width: int
 var lanes = 3
 var segment_length = 200
-var segments_amount = 500
+var segments_amount = 5000
 var rumble_length = 3
 var segments = []
 var track_length
@@ -33,7 +33,7 @@ var screen_size = Vector2.ZERO
 
 func _ready():
 	screen_size = get_viewport_rect().size
-	road_width = screen_size.x - 200
+	road_width = screen_size.x
 	reset_road()
 
 
@@ -98,6 +98,8 @@ func reset_road():
 				},
 				color = colors_dark if floori(float(i)/rumble_length)%2 == 0 else colors_light
 			}
+		#new_segment.p1.world.x = screen_size.x
+		#new_segment.p2.world.x = screen_size.x
 		new_segment.p1.world.z = i * segment_length
 		new_segment.p2.world.z = (i + 1) * segment_length
 		segments.append(new_segment)
