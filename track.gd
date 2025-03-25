@@ -157,7 +157,7 @@ func lane_marker_width(projected_road_width, lanes):
 
 
 func render_polygon(x1, y1, x2, y2, x3, y3, x4, y4, color):
-	var points: PackedVector2Array = [Vector2(100,100), Vector2(200,100), Vector2(200,200),Vector2(100,200)]
+	var points: PackedVector2Array = [Vector2(x1, y1), Vector2(x2, y2), Vector2(x3, y3),Vector2(x4,y4)]
 	var colors: PackedColorArray = [color]
 	draw_polygon(points, colors)
 
