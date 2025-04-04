@@ -2,7 +2,7 @@ extends Node2D
 
 
 @export var speed_current = 0
-var speed_max = 5000
+var speed_max = 800
 var acceleration = ceili(float(speed_max) / 5.0 / 60.0)
 var decceleration = ceili(float(speed_max) / 4.0 / 60.0)
 var breaking = ceili(float(speed_max) / 2.5 / 60.0)
@@ -57,7 +57,7 @@ func _process(delta):
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed_current
 
-	#print(speed_current)
+	print(speed_current)
 	# This is just example, the backgrounds should not be moved
 	var horizon_far = get_node("../Track/HorizonFar")
 	horizon_far.position += velocity * delta

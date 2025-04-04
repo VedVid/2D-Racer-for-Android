@@ -41,7 +41,7 @@ func _draw():
 	var base_segment = find_segment(Globals.z_track_position)
 	var max_y = screen_size.y
 	var segment
-	get_parent().print_tree_pretty()
+	#get_parent().print_tree_pretty()
 	var player_x_rel = get_node("/root/Main/PlayerCar/XPos").position.x
 	var camera_position = Vector3.ZERO
 
