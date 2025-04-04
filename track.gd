@@ -98,8 +98,8 @@ func reset_road():
 				},
 				color = colors_dark if floori(float(i)/rumble_length)%2 == 0 else colors_light
 			}
-		#new_segment.p1.world.x = screen_size.x
-		#new_segment.p2.world.x = screen_size.x
+		new_segment.p1.world.x = screen_size.x / 2
+		new_segment.p2.world.x = screen_size.x / 2
 		new_segment.p1.world.z = i * segment_length
 		new_segment.p2.world.z = (i + 1) * segment_length
 		segments.append(new_segment)
@@ -114,9 +114,9 @@ func find_segment(z):
 func project(p, camera_position):
 	p.camera = p.world - camera_position
 	p.screen_scale = camera_depth/p.camera.z
-	p.screen.x     = round((screen_size.y / 2) + (p.screen_scale * p.camera.x  * screen_size.x / 2));
-	p.screen.y     = round((screen_size.y / 2) - (p.screen_scale * p.camera.y  * screen_size.x / 2));
-	p.screen.z     = round(p.screen_scale * road_width  * screen_size.x / 2);
+	p.screen.x = round((screen_size.x / 2) + (p.screen_scale * p.camera.x * screen_size.x / 2));
+	p.screen.y = round((screen_size.y / 2) - (p.screen_scale * p.camera.y * screen_size.y / 2));
+	p.screen.z = round(p.screen_scale * road_width  * screen_size.x / 2);
 
 
 func render_segment(width, lanes, x1, y1, w1, x2, y2, w2, colors, fog):
