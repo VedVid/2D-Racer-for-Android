@@ -49,8 +49,10 @@ func _process(delta):
 		if speed_current < 0:
 			speed_current = 0
 
-	if (($Area2D.position.x < Globals.offroad_lane_width or
-		$Area2D.position.x > screen_size.x - Globals.offroad_lane_width) and
+	var track_node = get_node("../Track")
+
+	if (($XPos.position.x < (-track_node.road_width / 2) or
+		$XPos.position.x > track_node.road_width * 1.5) and
 		speed_current > offroad_limit):
 		speed_current -= offroad_decceleration
 
@@ -58,7 +60,6 @@ func _process(delta):
 		velocity = velocity.normalized() * speed_current
 
 	print(speed_current)
-	var track_node = get_node("../Track")
 	$XPos.position += velocity * delta
 	Globals.z_track_position += speed_current
 	print($XPos.position.x)
