@@ -59,14 +59,16 @@ func _process(delta):
 
 	print(speed_current)
 	# This is just example, the backgrounds should not be moved
-	#var horizon_far = get_node("../Track/HorizonFar")
+	var track_node = get_node("../Track")
 	#horizon_far.position += velocity * delta
 	$XPos.position += velocity * delta
 	Globals.z_track_position += speed_current
+	print($XPos.position.x)
 	$XPos.position.x = clamp(
 		$XPos.position.x,
-		Globals.offroad_lane_width / 2.0,
-		screen_size.x - (Globals.offroad_lane_width / 2.0))
+		0 - track_node.road_width,
+		screen_size.x + track_node.road_width
+	)
 
 
 func _on_button_tilt_acc_button_down():

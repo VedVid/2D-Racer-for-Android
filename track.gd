@@ -16,7 +16,7 @@ var colors_dark = {
 var color_fog = Color.DARK_GRAY
 
 var road_width: int
-var lanes = 3
+@export var lanes = 3
 var segment_length = 200
 var segments_amount = 5000
 var rumble_length = 3
