@@ -59,8 +59,8 @@ func _process(delta):
 
 	print(speed_current)
 	# This is just example, the backgrounds should not be moved
-	var horizon_far = get_node("../Track/HorizonFar")
-	horizon_far.position += velocity * delta
+	#var horizon_far = get_node("../Track/HorizonFar")
+	#horizon_far.position += velocity * delta
 	$XPos.position += velocity * delta
 	Globals.z_track_position += speed_current
 	$XPos.position.x = clamp(
