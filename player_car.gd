@@ -29,10 +29,10 @@ func _process(delta):
 	var velocity = Vector2.ZERO
 	var grav = Input.get_gravity()
 	if Input.is_action_pressed("steer_right") or grav.x > 2:
-		velocity.x += 1
+		velocity.x += 4
 		$Area2D/AnimatedSprite2D.play("right")
 	elif Input.is_action_pressed("steer_left") or grav.x < -2:
-		velocity.x -= 1
+		velocity.x -= 4
 		$Area2D/AnimatedSprite2D.play("left")
 	else:
 		$Area2D/AnimatedSprite2D.play("straight")
@@ -57,7 +57,7 @@ func _process(delta):
 		speed_current -= offroad_decceleration
 
 	if velocity.length() > 0:
-		velocity = velocity.normalized() * speed_current
+		velocity = velocity * speed_current
 
 	print(speed_current)
 	$XPos.position += velocity * delta
