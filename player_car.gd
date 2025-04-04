@@ -58,9 +58,7 @@ func _process(delta):
 		velocity = velocity.normalized() * speed_current
 
 	print(speed_current)
-	# This is just example, the backgrounds should not be moved
 	var track_node = get_node("../Track")
-	#horizon_far.position += velocity * delta
 	$XPos.position += velocity * delta
 	Globals.z_track_position += speed_current
 	print($XPos.position.x)
