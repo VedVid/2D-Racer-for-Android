@@ -9,4 +9,3 @@
 metadata/_edit_group_ = true
 
 [node name="PlayerCar" parent="." instance=ExtResource("2_h2yge")]
-speed_current = 0

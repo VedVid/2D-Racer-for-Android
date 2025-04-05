@@ -87,6 +87,42 @@ disabled = true
 action_mode = 0
 text = "BREAK"
 
+[node name="Button_buttons_acc" type="Button" parent="."]
+visible = false
+offset_left = 1110.0
+offset_top = 500.0
+offset_right = 1170.0
+offset_bottom = 560.0
+disabled = true
+text = "ACC"
+
+[node name="Button_buttons_break" type="Button" parent="."]
+visible = false
+offset_left = 1190.0
+offset_top = 500.0
+offset_right = 1250.0
+offset_bottom = 560.0
+disabled = true
+text = "BREAK"
+
+[node name="Button_buttons_left" type="Button" parent="."]
+visible = false
+offset_left = 30.0
+offset_top = 500.0
+offset_right = 90.0
+offset_bottom = 560.0
+disabled = true
+text = "LEFT"
+
+[node name="Button_buttons_right" type="Button" parent="."]
+visible = false
+offset_left = 110.0
+offset_top = 500.0
+offset_right = 170.0
+offset_bottom = 560.0
+disabled = true
+text = "RIGHT"
+
 [connection signal="button_down" from="Button_tilt_acc" to="." method="_on_button_tilt_acc_button_down"]
 [connection signal="button_up" from="Button_tilt_acc" to="." method="_on_button_tilt_acc_button_up"]
 [connection signal="button_down" from="Button_tilt_break" to="." method="_on_button_tilt_break_button_down"]

@@ -19,10 +19,20 @@ func _ready():
 	# Commented line below can be used for debugging or testing touch controls without mobile device.
 	if OS.get_name() == "Android" or OS.get_name() == "Windows":
 	#if OS.get_name() == "Android":
-		$Button_tilt_acc.visible = true
-		$Button_tilt_acc.disabled = false
-		$Button_tilt_break.visible = true
-		$Button_tilt_break.disabled = false
+		if Globals.android_steering_scheme == "tilt":
+			$Button_tilt_acc.visible = true
+			$Button_tilt_acc.disabled = false
+			$Button_tilt_break.visible = true
+			$Button_tilt_break.disabled = false
+		elif Globals.android_steering_scheme == "buttons":
+			$Button_buttons_acc.visible = true
+			$Button_buttons_acc.disabled = false
+			$Button_buttons_break.visible = true
+			$Button_buttons_break.disabled = false
+			$Button_buttons_left.visible = true
+			$Button_buttons_left.disabled = false
+			$Button_buttons_right.visible = true
+			$Button_buttons_right.disabled = false
 
 
 func _process(delta):
