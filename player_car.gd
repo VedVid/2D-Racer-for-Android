@@ -16,23 +16,7 @@ func _ready():
 	screen_size = get_viewport_rect().size
 	Globals.z_track_position = 0
 	$Area2D/AnimatedSprite2D.play("straight")
-	# Commented line below can be used for debugging or testing touch controls without mobile device.
-	if OS.get_name() == "Android" or OS.get_name() == "Windows":
-	#if OS.get_name() == "Android":
-		if Globals.android_steering_scheme == "tilt":
-			$Button_tilt_acc.visible = true
-			$Button_tilt_acc.disabled = false
-			$Button_tilt_break.visible = true
-			$Button_tilt_break.disabled = false
-		elif Globals.android_steering_scheme == "buttons":
-			$Button_buttons_acc.visible = true
-			$Button_buttons_acc.disabled = false
-			$Button_buttons_break.visible = true
-			$Button_buttons_break.disabled = false
-			$Button_buttons_left.visible = true
-			$Button_buttons_left.disabled = false
-			$Button_buttons_right.visible = true
-			$Button_buttons_right.disabled = false
+	_set_control_scheme()
 
 
 func _process(delta):
@@ -96,6 +80,56 @@ func _process(delta):
 	)
 
 
+func _set_control_scheme():
+	if OS.get_name() == "Android" or Globals.debug:
+		if Globals.android_steering_scheme == "tilt":
+			_disable_buttons_controls()
+			_enable_tilt_controls()
+		elif Globals.android_steering_scheme == "buttons":
+			_disable_tilt_controls()
+			_enable_buttons_controls()
+	if Globals.debug:
+		$Button_debug_change_android_steering.text = Globals.android_steering_scheme
+		$Button_debug_change_android_steering.visible = true
+		$Button_debug_change_android_steering.disabled = false
+
+
+func _enable_tilt_controls():
+	$Button_tilt_acc.visible = true
+	$Button_tilt_acc.disabled = false
+	$Button_tilt_break.visible = true
+	$Button_tilt_break.disabled = false
+
+
+func _disable_tilt_controls():
+	$Button_tilt_acc.visible = false
+	$Button_tilt_acc.disabled = true
+	$Button_tilt_break.visible = false
+	$Button_tilt_break.disabled = true
+
+
+func _enable_buttons_controls():
+	$Button_buttons_acc.visible = true
+	$Button_buttons_acc.disabled = false
+	$Button_buttons_break.visible = true
+	$Button_buttons_break.disabled = false
+	$Button_buttons_left.visible = true
+	$Button_buttons_left.disabled = false
+	$Button_buttons_right.visible = true
+	$Button_buttons_right.disabled = false
+
+
+func _disable_buttons_controls():
+	$Button_buttons_acc.visible = false
+	$Button_buttons_acc.disabled = true
+	$Button_buttons_break.visible = false
+	$Button_buttons_break.disabled = true
+	$Button_buttons_left.visible = false
+	$Button_buttons_left.disabled = true
+	$Button_buttons_right.visible = false
+	$Button_buttons_right.disabled = true
+
+
 func _on_button_tilt_acc_button_down():
 	# Z Index as a true / false indicator
 	$Button_tilt_acc.z_index = 1
@@ -154,3 +188,12 @@ func _on_button_buttons_right_button_down():
 func _on_button_buttons_right_button_up():
 	# Z Index as a true / false indicator
 	$Button_buttons_right.z_index = 0
+
+
+func _on_button_debug_change_android_steering_pressed():
+	if Globals.android_steering_scheme == Globals.android_steering_schemes[0]:
+		Globals.android_steering_scheme = Globals.android_steering_schemes[1]
+	else:
+		Globals.android_steering_scheme = Globals.android_steering_schemes[0]
+	$Button_debug_change_android_steering.text = Globals.android_steering_scheme
+	_set_control_scheme()

@@ -123,6 +123,18 @@ offset_bottom = 560.0
 disabled = true
 text = "RIGHT"
 
+[node name="Button_debug_change_android_steering" type="Button" parent="."]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 590.0
+offset_top = 10.0
+offset_right = 690.0
+offset_bottom = 50.0
+grow_horizontal = 2
+disabled = true
+
 [connection signal="button_down" from="Button_tilt_acc" to="." method="_on_button_tilt_acc_button_down"]
 [connection signal="button_up" from="Button_tilt_acc" to="." method="_on_button_tilt_acc_button_up"]
 [connection signal="button_down" from="Button_tilt_break" to="." method="_on_button_tilt_break_button_down"]
@@ -135,3 +147,4 @@ text = "RIGHT"
 [connection signal="button_up" from="Button_buttons_left" to="." method="_on_button_buttons_left_button_up"]
 [connection signal="button_down" from="Button_buttons_right" to="." method="_on_button_buttons_right_button_down"]
 [connection signal="button_up" from="Button_buttons_right" to="." method="_on_button_buttons_right_button_up"]
+[connection signal="pressed" from="Button_debug_change_android_steering" to="." method="_on_button_debug_change_android_steering_pressed"]

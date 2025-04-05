@@ -6,3 +6,5 @@ var offroad_lane_width = 200
 
 var android_steering_schemes = ["tilt", "buttons"]
 var android_steering_scheme = "buttons"
+
+var debug = true
