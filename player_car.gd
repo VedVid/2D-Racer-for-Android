@@ -38,19 +38,35 @@ func _ready():
 func _process(delta):
 	var velocity = Vector2.ZERO
 	var grav = Input.get_gravity()
-	if Input.is_action_pressed("steer_right") or grav.x > 2:
+	if (
+			Input.is_action_pressed("steer_right") or
+			(grav.x > 2 and Globals.android_steering_scheme == "tilt") or
+			$Button_buttons_right.z_index == 1
+		):
 		velocity.x += 4
 		$Area2D/AnimatedSprite2D.play("right")
-	elif Input.is_action_pressed("steer_left") or grav.x < -2:
+	elif (
+			Input.is_action_pressed("steer_left") or
+			(grav.x < -2 and Globals.android_steering_scheme == "tilt") or
+			$Button_buttons_left.z_index == 1
+		):
 		velocity.x -= 4
 		$Area2D/AnimatedSprite2D.play("left")
 	else:
 		$Area2D/AnimatedSprite2D.play("straight")
-	if Input.is_action_pressed("accelerate") or $Button_tilt_acc.z_index == 1:
+	if (
+		Input.is_action_pressed("accelerate") or
+		$Button_tilt_acc.z_index == 1 or
+		$Button_buttons_acc.z_index == 1
+		):
 		speed_current += acceleration
 		if speed_current > speed_max:
 			speed_current = speed_max
-	elif Input.is_action_pressed("brake") or $Button_tilt_break.z_index == 1:
+	elif (
+			Input.is_action_pressed("brake") or
+			$Button_tilt_break.z_index == 1 or
+			$Button_buttons_break.z_index == 1
+		):
 		speed_current -= breaking
 		if speed_current < 0:
 			speed_current = 0
@@ -98,3 +114,43 @@ func _on_button_tilt_break_button_down():
 func _on_button_tilt_break_button_up():
 	# Z Index as a true / false indicator
 	$Button_tilt_break.z_index = 0
+
+
+func _on_button_buttons_acc_button_down():
+	# Z Index as a true / false indicator
+	$Button_buttons_acc.z_index = 1
+
+
+func _on_button_buttons_acc_button_up():
+	# Z Index as a true / false indicator
+	$Button_buttons_acc.z_index = 0
+
+
+func _on_button_buttons_break_button_down():
+	# Z Index as a true / false indicator
+	$Button_buttons_break.z_index = 1
+
+
+func _on_button_buttons_break_button_up():
+	# Z Index as a true / false indicator
+	$Button_buttons_break.z_index = 0
+
+
+func _on_button_buttons_left_button_down():
+	# Z Index as a true / false indicator
+	$Button_buttons_left.z_index = 1
+
+
+func _on_button_buttons_left_button_up():
+	# Z Index as a true / false indicator
+	$Button_buttons_left.z_index = 0
+
+
+func _on_button_buttons_right_button_down():
+	# Z Index as a true / false indicator
+	$Button_buttons_right.z_index = 1
+
+
+func _on_button_buttons_right_button_up():
+	# Z Index as a true / false indicator
+	$Button_buttons_right.z_index = 0
