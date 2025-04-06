@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://clwv5pvglybtp"]
+[gd_scene load_steps=10 format=3 uid="uid://clwv5pvglybtp"]
 
 [ext_resource type="Script" uid="uid://b1llmsuvt84x6" path="res://player_car.gd" id="1_gty54"]
 [ext_resource type="Texture2D" uid="uid://c1ov7sxd5yn78" path="res://assets/car_left.png" id="1_in3s4"]
@@ -40,6 +40,9 @@ size = Vector2(141, 45)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_in3s4"]
 size = Vector2(141, 45)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0hd3m"]
+size = Vector2(60, 60)
 
 [node name="PlayerCar" type="Node2D"]
 script = ExtResource("1_gty54")
@@ -87,42 +90,6 @@ disabled = true
 action_mode = 0
 text = "BREAK"
 
-[node name="Button_buttons_acc" type="Button" parent="."]
-visible = false
-offset_left = 1110.0
-offset_top = 500.0
-offset_right = 1170.0
-offset_bottom = 560.0
-disabled = true
-text = "ACC"
-
-[node name="Button_buttons_break" type="Button" parent="."]
-visible = false
-offset_left = 1190.0
-offset_top = 500.0
-offset_right = 1250.0
-offset_bottom = 560.0
-disabled = true
-text = "BREAK"
-
-[node name="Button_buttons_left" type="Button" parent="."]
-visible = false
-offset_left = 30.0
-offset_top = 500.0
-offset_right = 90.0
-offset_bottom = 560.0
-disabled = true
-text = "LEFT"
-
-[node name="Button_buttons_right" type="Button" parent="."]
-visible = false
-offset_left = 110.0
-offset_top = 500.0
-offset_right = 170.0
-offset_bottom = 560.0
-disabled = true
-text = "RIGHT"
-
 [node name="Button_debug_change_android_steering" type="Button" parent="."]
 visible = false
 anchors_preset = 5
@@ -135,16 +102,104 @@ offset_bottom = 50.0
 grow_horizontal = 2
 disabled = true
 
+[node name="Button_buttons_acc" type="Control" parent="."]
+visible = false
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1110.0
+offset_top = 500.0
+offset_right = 1170.0
+offset_bottom = 560.0
+
+[node name="Touch_buttons_acc" type="TouchScreenButton" parent="Button_buttons_acc"]
+position = Vector2(30, 30)
+shape = SubResource("RectangleShape2D_0hd3m")
+
+[node name="Label" type="Label" parent="Button_buttons_acc"]
+layout_mode = 0
+offset_right = 60.0
+offset_bottom = 60.0
+text = "ACC"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button_buttons_break" type="Control" parent="."]
+visible = false
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1190.0
+offset_top = 500.0
+offset_right = 1250.0
+offset_bottom = 560.0
+
+[node name="Touch_buttons_break" type="TouchScreenButton" parent="Button_buttons_break"]
+position = Vector2(30, 30)
+shape = SubResource("RectangleShape2D_0hd3m")
+
+[node name="Label" type="Label" parent="Button_buttons_break"]
+layout_mode = 0
+offset_right = 60.0
+offset_bottom = 60.0
+text = "BREAK"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button_buttons_left" type="Control" parent="."]
+visible = false
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 3
+anchors_preset = 0
+offset_left = 30.0
+offset_top = 500.0
+offset_right = 90.0
+offset_bottom = 560.0
+
+[node name="Touch_buttons_left" type="TouchScreenButton" parent="Button_buttons_left"]
+position = Vector2(30, 30)
+shape = SubResource("RectangleShape2D_0hd3m")
+
+[node name="Label" type="Label" parent="Button_buttons_left"]
+layout_mode = 0
+offset_right = 60.0
+offset_bottom = 60.0
+text = "LEFT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button_buttons_right" type="Control" parent="."]
+visible = false
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 3
+anchors_preset = 0
+offset_left = 110.0
+offset_top = 500.0
+offset_right = 170.0
+offset_bottom = 560.0
+
+[node name="Touch_buttons_right" type="TouchScreenButton" parent="Button_buttons_right"]
+position = Vector2(30, 30)
+shape = SubResource("RectangleShape2D_0hd3m")
+
+[node name="Label" type="Label" parent="Button_buttons_right"]
+layout_mode = 0
+offset_right = 60.0
+offset_bottom = 60.0
+text = "RIGHT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [connection signal="button_down" from="Button_tilt_acc" to="." method="_on_button_tilt_acc_button_down"]
 [connection signal="button_up" from="Button_tilt_acc" to="." method="_on_button_tilt_acc_button_up"]
 [connection signal="button_down" from="Button_tilt_break" to="." method="_on_button_tilt_break_button_down"]
 [connection signal="button_up" from="Button_tilt_break" to="." method="_on_button_tilt_break_button_up"]
-[connection signal="button_down" from="Button_buttons_acc" to="." method="_on_button_buttons_acc_button_down"]
-[connection signal="button_up" from="Button_buttons_acc" to="." method="_on_button_buttons_acc_button_up"]
-[connection signal="button_down" from="Button_buttons_break" to="." method="_on_button_buttons_break_button_down"]
-[connection signal="button_up" from="Button_buttons_break" to="." method="_on_button_buttons_break_button_up"]
-[connection signal="button_down" from="Button_buttons_left" to="." method="_on_button_buttons_left_button_down"]
-[connection signal="button_up" from="Button_buttons_left" to="." method="_on_button_buttons_left_button_up"]
-[connection signal="button_down" from="Button_buttons_right" to="." method="_on_button_buttons_right_button_down"]
-[connection signal="button_up" from="Button_buttons_right" to="." method="_on_button_buttons_right_button_up"]
 [connection signal="pressed" from="Button_debug_change_android_steering" to="." method="_on_button_debug_change_android_steering_pressed"]
+[connection signal="pressed" from="Button_buttons_acc/Touch_buttons_acc" to="." method="_on_touch_buttons_acc_pressed"]
+[connection signal="released" from="Button_buttons_acc/Touch_buttons_acc" to="." method="_on_touch_buttons_acc_released"]
+[connection signal="pressed" from="Button_buttons_break/Touch_buttons_break" to="." method="_on_touch_buttons_break_pressed"]
+[connection signal="released" from="Button_buttons_break/Touch_buttons_break" to="." method="_on_touch_buttons_break_released"]
+[connection signal="pressed" from="Button_buttons_left/Touch_buttons_left" to="." method="_on_touch_buttons_left_pressed"]
+[connection signal="released" from="Button_buttons_left/Touch_buttons_left" to="." method="_on_touch_buttons_left_released"]
+[connection signal="pressed" from="Button_buttons_right/Touch_buttons_right" to="." method="_on_touch_buttons_right_pressed"]
+[connection signal="released" from="Button_buttons_right/Touch_buttons_right" to="." method="_on_touch_buttons_right_released"]

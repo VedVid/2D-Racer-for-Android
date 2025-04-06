@@ -110,24 +110,16 @@ func _disable_tilt_controls():
 
 func _enable_buttons_controls():
 	$Button_buttons_acc.visible = true
-	$Button_buttons_acc.disabled = false
 	$Button_buttons_break.visible = true
-	$Button_buttons_break.disabled = false
 	$Button_buttons_left.visible = true
-	$Button_buttons_left.disabled = false
 	$Button_buttons_right.visible = true
-	$Button_buttons_right.disabled = false
 
 
 func _disable_buttons_controls():
 	$Button_buttons_acc.visible = false
-	$Button_buttons_acc.disabled = true
 	$Button_buttons_break.visible = false
-	$Button_buttons_break.disabled = true
 	$Button_buttons_left.visible = false
-	$Button_buttons_left.disabled = true
 	$Button_buttons_right.visible = false
-	$Button_buttons_right.disabled = true
 
 
 func _on_button_tilt_acc_button_down():
@@ -150,44 +142,52 @@ func _on_button_tilt_break_button_up():
 	$Button_tilt_break.z_index = 0
 
 
-func _on_button_buttons_acc_button_down():
+func _on_touch_buttons_acc_pressed():
 	# Z Index as a true / false indicator
-	$Button_buttons_acc.z_index = 1
+	if $Button_buttons_acc.visible:
+		$Button_buttons_acc.z_index = 1
 
 
-func _on_button_buttons_acc_button_up():
+func _on_touch_buttons_acc_released():
 	# Z Index as a true / false indicator
-	$Button_buttons_acc.z_index = 0
+	if $Button_buttons_acc.visible:
+		$Button_buttons_acc.z_index = 0
 
 
-func _on_button_buttons_break_button_down():
+func _on_touch_buttons_break_pressed():
 	# Z Index as a true / false indicator
-	$Button_buttons_break.z_index = 1
+	if $Button_buttons_break.visible:
+		$Button_buttons_break.z_index = 1
 
 
-func _on_button_buttons_break_button_up():
+func _on_touch_buttons_break_released():
 	# Z Index as a true / false indicator
-	$Button_buttons_break.z_index = 0
+	if $Button_buttons_break.visible:
+		$Button_buttons_break.z_index = 0
 
 
-func _on_button_buttons_left_button_down():
+func _on_touch_buttons_left_pressed():
 	# Z Index as a true / false indicator
-	$Button_buttons_left.z_index = 1
+	if $Button_buttons_left.visible:
+		$Button_buttons_left.z_index = 1
 
 
-func _on_button_buttons_left_button_up():
+func _on_touch_buttons_left_released():
 	# Z Index as a true / false indicator
-	$Button_buttons_left.z_index = 0
+	if $Button_buttons_left.visible:
+		$Button_buttons_left.z_index = 0
 
 
-func _on_button_buttons_right_button_down():
+func _on_touch_buttons_right_pressed():
 	# Z Index as a true / false indicator
-	$Button_buttons_right.z_index = 1
+	if $Button_buttons_right.visible:
+		$Button_buttons_right.z_index = 1
 
 
-func _on_button_buttons_right_button_up():
+func _on_touch_buttons_right_released():
 	# Z Index as a true / false indicator
-	$Button_buttons_right.z_index = 0
+	if $Button_buttons_right.visible:
+		$Button_buttons_right.z_index = 0
 
 
 func _on_button_debug_change_android_steering_pressed():
