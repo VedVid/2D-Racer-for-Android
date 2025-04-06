@@ -96,16 +96,12 @@ func _set_control_scheme():
 
 func _enable_tilt_controls():
 	$Button_tilt_acc.visible = true
-	$Button_tilt_acc.disabled = false
 	$Button_tilt_break.visible = true
-	$Button_tilt_break.disabled = false
 
 
 func _disable_tilt_controls():
 	$Button_tilt_acc.visible = false
-	$Button_tilt_acc.disabled = true
 	$Button_tilt_break.visible = false
-	$Button_tilt_break.disabled = true
 
 
 func _enable_buttons_controls():
@@ -122,80 +118,86 @@ func _disable_buttons_controls():
 	$Button_buttons_right.visible = false
 
 
-func _on_button_tilt_acc_button_down():
+func _on_touch_tilt_acc_pressed():
 	# Z Index as a true / false indicator
-	$Button_tilt_acc.z_index = 1
+	if $Button_tilt_acc.visible:
+		$Button_tilt_acc.z_index = 1
+		$Button_tilt_acc/ColorRect.color = Color.html("#909090")
 
 
-func _on_button_tilt_acc_button_up():
+func _on_touch_tilt_acc_released():
+	if $Button_tilt_acc.visible:
+		$Button_tilt_acc.z_index = 0
+		$Button_tilt_acc/ColorRect.color = Color.html("#121212")
+
+
+func _on_touch_tilt_break_pressed():
 	# Z Index as a true / false indicator
-	$Button_tilt_acc.z_index = 0
+	if $Button_tilt_break.visible:
+		$Button_tilt_break.z_index = 1
+		$Button_tilt_break/ColorRect.color = Color.html("#909090")
 
 
-func _on_button_tilt_break_button_down():
-	# Z Index as a true / false indicator
-	$Button_tilt_break.z_index = 1
-
-
-func _on_button_tilt_break_button_up():
-	# Z Index as a true / false indicator
-	$Button_tilt_break.z_index = 0
+func _on_touch_tilt_break_released():
+	if $Button_tilt_break.visible:
+		$Button_tilt_break.z_index = 0
+		$Button_tilt_break/ColorRect.color = Color.html("#121212")
 
 
 func _on_touch_buttons_acc_pressed():
 	# Z Index as a true / false indicator
 	if $Button_buttons_acc.visible:
 		$Button_buttons_acc.z_index = 1
-		$Button_buttons_acc/ColorRect.color = Color.html("#121212")
+		$Button_buttons_acc/ColorRect.color = Color.html("#909090")
 
 
 func _on_touch_buttons_acc_released():
 	# Z Index as a true / false indicator
 	if $Button_buttons_acc.visible:
 		$Button_buttons_acc.z_index = 0
-		$Button_buttons_acc/ColorRect.color = Color.html("#373737")
+		$Button_buttons_acc/ColorRect.color = Color.html("#121212")
 
 
 func _on_touch_buttons_break_pressed():
 	# Z Index as a true / false indicator
 	if $Button_buttons_break.visible:
 		$Button_buttons_break.z_index = 1
-		$Button_buttons_break/ColorRect.color = Color.html("#121212")
+		$Button_buttons_break/ColorRect.color = Color.html("#909090")
 
 
 func _on_touch_buttons_break_released():
 	# Z Index as a true / false indicator
 	if $Button_buttons_break.visible:
 		$Button_buttons_break.z_index = 0
-		$Button_buttons_break/ColorRect.color = Color.html("#373737")
+		$Button_buttons_break/ColorRect.color = Color.html("#121212")
 
 
 func _on_touch_buttons_left_pressed():
 	# Z Index as a true / false indicator
 	if $Button_buttons_left.visible:
 		$Button_buttons_left.z_index = 1
-		$Button_buttons_left/ColorRect.color = Color.html("#121212")
+		$Button_buttons_left/ColorRect.color = Color.html("#909090")
 
 
 func _on_touch_buttons_left_released():
 	# Z Index as a true / false indicator
 	if $Button_buttons_left.visible:
 		$Button_buttons_left.z_index = 0
-		$Button_buttons_left/ColorRect.color = Color.html("#373737")
+		$Button_buttons_left/ColorRect.color = Color.html("#121212")
 
 
 func _on_touch_buttons_right_pressed():
 	# Z Index as a true / false indicator
 	if $Button_buttons_right.visible:
 		$Button_buttons_right.z_index = 1
-		$Button_buttons_right/ColorRect.color = Color.html("#121212")
+		$Button_buttons_right/ColorRect.color = Color.html("#909090")
 
 
 func _on_touch_buttons_right_released():
 	# Z Index as a true / false indicator
 	if $Button_buttons_right.visible:
 		$Button_buttons_right.z_index = 0
-		$Button_buttons_right/ColorRect.color = Color.html("#373737")
+		$Button_buttons_right/ColorRect.color = Color.html("#121212")
 
 
 func _on_button_debug_change_android_steering_pressed():

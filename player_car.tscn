@@ -70,26 +70,6 @@ shape = SubResource("RectangleShape2D_h8gag")
 position = Vector2(-1.5, 8.5)
 shape = SubResource("RectangleShape2D_in3s4")
 
-[node name="Button_tilt_acc" type="Button" parent="."]
-visible = false
-offset_left = 1150.0
-offset_top = 500.0
-offset_right = 1210.0
-offset_bottom = 560.0
-disabled = true
-action_mode = 0
-text = "ACC"
-
-[node name="Button_tilt_break" type="Button" parent="."]
-visible = false
-offset_left = 70.0
-offset_top = 500.0
-offset_right = 130.0
-offset_bottom = 560.0
-disabled = true
-action_mode = 0
-text = "BREAK"
-
 [node name="Button_debug_change_android_steering" type="Button" parent="."]
 visible = false
 anchors_preset = 5
@@ -101,6 +81,60 @@ offset_right = 690.0
 offset_bottom = 50.0
 grow_horizontal = 2
 disabled = true
+
+[node name="Button_tilt_acc" type="Control" parent="."]
+visible = false
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1150.0
+offset_top = 500.0
+offset_right = 1210.0
+offset_bottom = 560.0
+
+[node name="Touch_tilt_acc" type="TouchScreenButton" parent="Button_tilt_acc"]
+position = Vector2(30, 30)
+shape = SubResource("RectangleShape2D_0hd3m")
+
+[node name="ColorRect" type="ColorRect" parent="Button_tilt_acc"]
+offset_right = 60.0
+offset_bottom = 60.0
+color = Color(0.215902, 0.215902, 0.215902, 1)
+
+[node name="Label" type="Label" parent="Button_tilt_acc"]
+layout_mode = 0
+offset_right = 60.0
+offset_bottom = 60.0
+text = "ACC"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button_tilt_break" type="Control" parent="."]
+visible = false
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 3
+anchors_preset = 0
+offset_left = 70.0
+offset_top = 500.0
+offset_right = 130.0
+offset_bottom = 560.0
+
+[node name="Touch_tilt_break" type="TouchScreenButton" parent="Button_tilt_break"]
+position = Vector2(30, 30)
+shape = SubResource("RectangleShape2D_0hd3m")
+
+[node name="ColorRect" type="ColorRect" parent="Button_tilt_break"]
+offset_right = 60.0
+offset_bottom = 60.0
+color = Color(0.215902, 0.215902, 0.215902, 1)
+
+[node name="Label" type="Label" parent="Button_tilt_break"]
+layout_mode = 0
+offset_right = 60.0
+offset_bottom = 60.0
+text = "BREAK"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Button_buttons_acc" type="Control" parent="."]
 visible = false
@@ -184,6 +218,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Button_buttons_right" type="Control" parent="."]
+visible = false
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 3
 anchors_preset = 0
@@ -210,11 +245,11 @@ text = "RIGHT"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="button_down" from="Button_tilt_acc" to="." method="_on_button_tilt_acc_button_down"]
-[connection signal="button_up" from="Button_tilt_acc" to="." method="_on_button_tilt_acc_button_up"]
-[connection signal="button_down" from="Button_tilt_break" to="." method="_on_button_tilt_break_button_down"]
-[connection signal="button_up" from="Button_tilt_break" to="." method="_on_button_tilt_break_button_up"]
 [connection signal="pressed" from="Button_debug_change_android_steering" to="." method="_on_button_debug_change_android_steering_pressed"]
+[connection signal="pressed" from="Button_tilt_acc/Touch_tilt_acc" to="." method="_on_touch_tilt_acc_pressed"]
+[connection signal="released" from="Button_tilt_acc/Touch_tilt_acc" to="." method="_on_touch_tilt_acc_released"]
+[connection signal="pressed" from="Button_tilt_break/Touch_tilt_break" to="." method="_on_touch_tilt_break_pressed"]
+[connection signal="released" from="Button_tilt_break/Touch_tilt_break" to="." method="_on_touch_tilt_break_released"]
 [connection signal="pressed" from="Button_buttons_acc/Touch_buttons_acc" to="." method="_on_touch_buttons_acc_pressed"]
 [connection signal="released" from="Button_buttons_acc/Touch_buttons_acc" to="." method="_on_touch_buttons_acc_released"]
 [connection signal="pressed" from="Button_buttons_break/Touch_buttons_break" to="." method="_on_touch_buttons_break_pressed"]
