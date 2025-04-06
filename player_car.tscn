@@ -116,6 +116,11 @@ offset_bottom = 560.0
 position = Vector2(30, 30)
 shape = SubResource("RectangleShape2D_0hd3m")
 
+[node name="ColorRect" type="ColorRect" parent="Button_buttons_acc"]
+offset_right = 60.0
+offset_bottom = 60.0
+color = Color(0.215902, 0.215902, 0.215902, 1)
+
 [node name="Label" type="Label" parent="Button_buttons_acc"]
 layout_mode = 0
 offset_right = 60.0
@@ -137,6 +142,11 @@ offset_bottom = 560.0
 [node name="Touch_buttons_break" type="TouchScreenButton" parent="Button_buttons_break"]
 position = Vector2(30, 30)
 shape = SubResource("RectangleShape2D_0hd3m")
+
+[node name="ColorRect" type="ColorRect" parent="Button_buttons_break"]
+offset_right = 60.0
+offset_bottom = 60.0
+color = Color(0.215902, 0.215902, 0.215902, 1)
 
 [node name="Label" type="Label" parent="Button_buttons_break"]
 layout_mode = 0
@@ -160,6 +170,11 @@ offset_bottom = 560.0
 position = Vector2(30, 30)
 shape = SubResource("RectangleShape2D_0hd3m")
 
+[node name="ColorRect" type="ColorRect" parent="Button_buttons_left"]
+offset_right = 60.0
+offset_bottom = 60.0
+color = Color(0.215902, 0.215902, 0.215902, 1)
+
 [node name="Label" type="Label" parent="Button_buttons_left"]
 layout_mode = 0
 offset_right = 60.0
@@ -169,7 +184,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Button_buttons_right" type="Control" parent="."]
-visible = false
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 3
 anchors_preset = 0
@@ -181,6 +195,12 @@ offset_bottom = 560.0
 [node name="Touch_buttons_right" type="TouchScreenButton" parent="Button_buttons_right"]
 position = Vector2(30, 30)
 shape = SubResource("RectangleShape2D_0hd3m")
+
+[node name="ColorRect" type="ColorRect" parent="Button_buttons_right"]
+layout_mode = 0
+offset_right = 60.0
+offset_bottom = 60.0
+color = Color(0.215902, 0.215902, 0.215902, 1)
 
 [node name="Label" type="Label" parent="Button_buttons_right"]
 layout_mode = 0

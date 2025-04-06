@@ -146,48 +146,56 @@ func _on_touch_buttons_acc_pressed():
 	# Z Index as a true / false indicator
 	if $Button_buttons_acc.visible:
 		$Button_buttons_acc.z_index = 1
+		$Button_buttons_acc/ColorRect.color = Color.html("#121212")
 
 
 func _on_touch_buttons_acc_released():
 	# Z Index as a true / false indicator
 	if $Button_buttons_acc.visible:
 		$Button_buttons_acc.z_index = 0
+		$Button_buttons_acc/ColorRect.color = Color.html("#373737")
 
 
 func _on_touch_buttons_break_pressed():
 	# Z Index as a true / false indicator
 	if $Button_buttons_break.visible:
 		$Button_buttons_break.z_index = 1
+		$Button_buttons_break/ColorRect.color = Color.html("#121212")
 
 
 func _on_touch_buttons_break_released():
 	# Z Index as a true / false indicator
 	if $Button_buttons_break.visible:
 		$Button_buttons_break.z_index = 0
+		$Button_buttons_break/ColorRect.color = Color.html("#373737")
 
 
 func _on_touch_buttons_left_pressed():
 	# Z Index as a true / false indicator
 	if $Button_buttons_left.visible:
 		$Button_buttons_left.z_index = 1
+		$Button_buttons_left/ColorRect.color = Color.html("#121212")
 
 
 func _on_touch_buttons_left_released():
 	# Z Index as a true / false indicator
 	if $Button_buttons_left.visible:
 		$Button_buttons_left.z_index = 0
+		$Button_buttons_left/ColorRect.color = Color.html("#373737")
 
 
 func _on_touch_buttons_right_pressed():
 	# Z Index as a true / false indicator
 	if $Button_buttons_right.visible:
 		$Button_buttons_right.z_index = 1
+		$Button_buttons_right/ColorRect.color = Color.html("#121212")
 
 
 func _on_touch_buttons_right_released():
 	# Z Index as a true / false indicator
 	if $Button_buttons_right.visible:
 		$Button_buttons_right.z_index = 0
+		$Button_buttons_right/ColorRect.color = Color.html("#373737")
 
 
 func _on_button_debug_change_android_steering_pressed():
