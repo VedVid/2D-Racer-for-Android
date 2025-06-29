@@ -47,6 +47,11 @@ func _draw():
 
 	for i in draw_distance:
 		segment = segments[(base_segment.index + i) % segments.size()]
+		
+		# TODO
+		# Segment looped
+		# https://github.com/jakesgordon/javascript-racer/blob/master/v1.straight.html
+		# line 174
 
 		camera_position.x = player_x_rel
 		camera_position.y = camera_height
