@@ -8,6 +8,7 @@ var decceleration = ceili(float(speed_max) / 4.0 / 60.0)
 var breaking = ceili(float(speed_max) / 2.5 / 60.0)
 var offroad_decceleration = ceili(float(speed_max) / 3.25 / 60.0)
 var offroad_limit = ceili(float(speed_max) / 4.0)
+var centrifugal = 0.3
 
 var screen_size = Vector2.ZERO
 

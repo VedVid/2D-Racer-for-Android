@@ -209,3 +209,48 @@ func curve_ease_out(a, b, percent):
 
 func curve_ease_in_out(a, b, percent):
 	return a + (b - a) * ((-cos(percent * PI) / 2.0) + 0.5)
+
+
+func add_segment(curve):
+	var i = len(segments)
+	var new_segment = {
+		index = i,
+		p1 = {
+			world = Vector3.ZERO,
+			camera = Vector3.ZERO,
+			screen = Vector3.ZERO,
+			screen_scale = 0,
+		},
+		p2 = {
+			world = Vector3.ZERO,
+			camera = Vector3.ZERO,
+			screen = Vector3.ZERO,
+			screen_scale = 0,
+		},
+		color = colors_dark if floori(float(i)/rumble_length)%2 == 0 else colors_light,
+		looped = false,
+		fog = false,
+		curve = curve
+	}
+	new_segment.p1.world.x = screen_size.x / 2
+	new_segment.p2.world.x = screen_size.x / 2
+	new_segment.p1.world.z = i * segment_length
+	new_segment.p2.world.z = (i + 1) * segment_length
+	segments.append(new_segment)
+
+
+func add_road(enter, hold, leave, curve):
+	for i1 in enter:
+		add_segment(curve_ease_in(0, curve, float(i1) / float(enter)))
+	for i2 in hold:
+		add_segment(curve)
+	for i3 in leave:
+		add_segment(curve_ease_in_out(curve, 0, float(i3) / float(leave)))
+
+
+func add_s_curves():
+	add_road(road.length.medium, road.length.medium, road.length.medium,  -road.curve.easy)
+	add_road(road.length.medium, road.length.medium, road.length.medium,   road.curve.medium)
+	add_road(road.length.medium, road.length.medium, road.length.medium,   road.curve.easy)
+	add_road(road.length.medium, road.length.medium, road.length.medium,  -road.curve.easy)
+	add_road(road.length.medium, road.length.medium, road.length.medium,  -road.curve.medium)
