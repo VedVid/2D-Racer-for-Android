@@ -50,19 +50,18 @@ func _draw():
 	for i in draw_distance:
 		segment = segments[(base_segment.index + i) % segments.size()]
 		
-		# TODO
-		# Segment looped
-		# https://github.com/jakesgordon/javascript-racer/blob/master/v1.straight.html
-		# line 174
+		segment.looped = segment.index < base_segment.index
 
 		segment.fog = exponential_fog(float(i) / float(draw_distance), float(fog_density))
 
 		camera_position.x = player_x_rel
 		camera_position.y = camera_height
-		camera_position.z = Globals.z_track_position
+		camera_position.z = Globals.z_track_position - (track_length if segment.looped else 0)
 
 		project(segment.p1, camera_position)
 		project(segment.p2, camera_position)
+
+		camera_position.z = Globals.z_track_position
 
 		if ((segment.p1.camera.z <= camera_depth) || (segment.p2.screen.y >= max_y)):
 			continue;
