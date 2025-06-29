@@ -4,5 +4,5 @@ The goal of this project is to learn the basics of development for mobile platfo
 
 The project is being developed in the Godot engine, using the GDScript language, based on Jake Gordon's “How to build a racing game” tutorial (available here: https://jakesgordon.com/writing/javascript-racer-v1-straight/)
 
-![alt text](images\readme_screenshot.png)
+![alt text](images/readme_screenshot.png)
 
