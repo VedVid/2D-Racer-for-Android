@@ -32,6 +32,21 @@ var draw_distance = 300
 
 var screen_size = Vector2.ZERO
 
+var road = {
+	length = {  # In amount of segments.
+		none = 0.0,
+		short = 25.0,
+		medium = 50.0,
+		long = 100.0,
+	},
+	curve = {
+		none = 0.0,
+		easy = 2.0,
+		medium = 4.0,
+		hard = 6.0
+	}
+}
+
 
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -185,3 +200,12 @@ func render_fog(x, y, w, h, fog):
 	if fog < 1:
 		var fog_color = Color(color_fog.r, color_fog.g, color_fog.b, (1 - fog))
 		draw_rect(Rect2(x, y, w, h), fog_color)
+
+func curve_ease_in(a, b, percent):
+	return a + (b - a) * pow(percent, 2.0)
+
+func curve_ease_out(a, b, percent):
+	return a + (b - a) * (1.0 - pow(1.0 - percent, 2.0))
+
+func curve_ease_in_out(a, b, percent):
+	return a + (b - a) * ((-cos(percent * PI) / 2.0) + 0.5)
