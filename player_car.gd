@@ -69,10 +69,8 @@ func _process(delta):
 	if velocity.length() > 0:
 		velocity = velocity * speed_current
 
-	print(speed_current)
 	$XPos.position += velocity * delta
 	Globals.z_track_position += speed_current
-	print($XPos.position.x)
 	$XPos.position.x = clamp(
 		$XPos.position.x,
 		0 - track_node.road_width,
