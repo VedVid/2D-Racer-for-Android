@@ -10,7 +10,8 @@ config_version=5
 
 [application]
 
-config/name="2d-racer"
+config/name="testracer"
+config/version="0.0.1"
 run/main_scene="uid://c14yp4ycrqnm5"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
