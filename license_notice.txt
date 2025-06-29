@@ -1,0 +1,5 @@
+This game is a rough translation of Jake's Gordon "Javascript Racer" described on his website https://jakesgordon.com/writing/javascript-racer/ with code released under MIT license and available at https://github.com/jakesgordon/javascript-racer/ [20250629]
+
+As some elements were difficult for me to translate them to Godot, I was using RacesJS aka Racer 10k by Selim "onaluf" Arsever as another point of reference. The code is released under MIT license and available at https://github.com/onaluf/RacerJS/tree/master [20250629]
+
+The licenses as presented on their repositories you might read in the "licenses" directory.
