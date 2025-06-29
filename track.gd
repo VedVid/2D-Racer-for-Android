@@ -15,6 +15,8 @@ var colors_dark = {
 }
 var color_fog = Color.DARK_GRAY
 
+var fog_density = 50
+
 var road_width: int
 @export var lanes = 3
 var segment_length = 200
@@ -53,6 +55,8 @@ func _draw():
 		# https://github.com/jakesgordon/javascript-racer/blob/master/v1.straight.html
 		# line 174
 
+		segment.fog = exponential_fog(float(i) / float(draw_distance), float(fog_density))
+
 		camera_position.x = player_x_rel
 		camera_position.y = camera_height
 		camera_position.z = Globals.z_track_position
@@ -73,7 +77,7 @@ func _draw():
 			segment.p2.screen.y,
 			segment.p2.screen.z,
 			segment.color,
-			null
+			segment.fog,
 		)
 
 		max_y = segment.p2.screen.y
@@ -101,7 +105,9 @@ func reset_road():
 					screen = Vector3.ZERO,
 					screen_scale = 0,
 				},
-				color = colors_dark if floori(float(i)/rumble_length)%2 == 0 else colors_light
+				color = colors_dark if floori(float(i)/rumble_length)%2 == 0 else colors_light,
+				looped = false,
+				fog = false
 			}
 		new_segment.p1.world.x = screen_size.x / 2
 		new_segment.p2.world.x = screen_size.x / 2
@@ -152,7 +158,7 @@ func render_segment(width, lanes, x1, y1, w1, x2, y2, w2, colors, fog):
 		lane_x1 += lane_w1
 		lane_x2 += lane_w2
 
-	#render_fog(0, y1, width, y2-y1, fog)
+	render_fog(0, y1, width, y2-y1, fog)
 
 
 func rumble_width(projected_road_width, lanes):
@@ -167,6 +173,11 @@ func render_polygon(x1, y1, x2, y2, x3, y3, x4, y4, color):
 	var points: PackedVector2Array = [Vector2(x1, y1), Vector2(x2, y2), Vector2(x3, y3),Vector2(x4,y4)]
 	var colors: PackedColorArray = [color]
 	draw_polygon(points, colors)
+
+
+func exponential_fog(distance, density):
+	# 2.718 is rounded equivalent of JS's math.E, which represents Euler's number
+	return 1 / (pow(2.718, (distance * distance * density)))
 
 
 func render_fog(x, y, w, h, fog):
