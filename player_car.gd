@@ -21,6 +21,12 @@ func _ready():
 
 
 func _process(delta):
+	var track_node = get_node("../Track")
+
+	var player_segment = track_node.find_segment(Globals.z_track_position + track_node.player_z)
+	print(player_segment)
+	print()
+
 	var velocity = Vector2.ZERO
 	var grav = Input.get_gravity()
 	if (
@@ -59,8 +65,6 @@ func _process(delta):
 		speed_current -= decceleration
 		if speed_current < 0:
 			speed_current = 0
-
-	var track_node = get_node("../Track")
 
 	if (($XPos.position.x < (-track_node.road_width / 2) or
 		$XPos.position.x > track_node.road_width * 1.5) and

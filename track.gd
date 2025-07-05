@@ -30,6 +30,8 @@ var camera_depth = 1 / tan((field_of_view / 2.0) * PI / 180)
 var camera_height = 1000
 var draw_distance = 300
 
+var player_z = camera_height * camera_depth
+
 var screen_size = Vector2.ZERO
 
 var road = {
