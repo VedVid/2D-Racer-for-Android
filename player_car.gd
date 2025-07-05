@@ -24,8 +24,9 @@ func _process(delta):
 	var track_node = get_node("../Track")
 
 	var player_segment = track_node.find_segment(Globals.z_track_position + track_node.player_z)
-	print(player_segment)
-	print()
+	var speed_percent = float(speed_current) / float(speed_max)
+	#print(player_segment.curve)
+	#print()
 
 	var velocity = Vector2.ZERO
 	var grav = Input.get_gravity()
@@ -75,6 +76,7 @@ func _process(delta):
 		velocity = velocity * speed_current
 
 	$XPos.position += velocity * delta
+	#$Xpos.position -= velocity * speed_percent * player_segment.curve * centrifugal
 	Globals.z_track_position += speed_current
 	$XPos.position.x = clamp(
 		$XPos.position.x,
