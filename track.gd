@@ -108,30 +108,20 @@ func _process(delta):
 func reset_road():
 	segments = []
 
-	for i in segments_amount:
-		var new_segment = {
-				index = i,
-				p1 = {
-					world = Vector3.ZERO,
-					camera = Vector3.ZERO,
-					screen = Vector3.ZERO,
-					screen_scale = 0,
-				},
-				p2 = {
-					world = Vector3.ZERO,
-					camera = Vector3.ZERO,
-					screen = Vector3.ZERO,
-					screen_scale = 0,
-				},
-				color = colors_dark if floori(float(i)/rumble_length)%2 == 0 else colors_light,
-				looped = false,
-				fog = false
-			}
-		new_segment.p1.world.x = screen_size.x / 2
-		new_segment.p2.world.x = screen_size.x / 2
-		new_segment.p1.world.z = i * segment_length
-		new_segment.p2.world.z = (i + 1) * segment_length
-		segments.append(new_segment)
+	add_straight(road.length.short)
+	add_s_curves()
+	add_straight(road.length.long)
+	add_curve(road.length.medium, road.curve.medium)
+	add_curve(road.length.long, road.curve.medium)
+	add_straight(road.length.long)
+	add_s_curves()
+	add_curve(road.length.long, -road.curve.medium)
+	add_curve(road.length.long, road.curve.easy)
+	add_straight(null)
+	add_curve(road.length.short, -road.curve.hard)
+	add_straight(road.length.long)
+	add_s_curves()
+	add_straight(road.length.short)
 
 	track_length = segments.size() * segment_length
 
@@ -248,6 +238,20 @@ func add_road(enter, hold, leave, curve):
 		add_segment(curve)
 	for i3 in leave:
 		add_segment(curve_ease_in_out(curve, 0, float(i3) / float(leave)))
+
+
+func add_straight(num):
+	if not num:
+		num = road.length.medium
+	add_road(num, num, num, 0)
+
+
+func add_curve(num, curve):
+	if not num:
+		num = road.length.medium
+	if not curve:
+		num = road.curve.medium
+	add_road(num, num, num, curve)
 
 
 func add_s_curves():
