@@ -58,6 +58,9 @@ func _ready():
 
 func _draw():
 	var base_segment = find_segment(Globals.z_track_position)
+	var base_percent = percent_remaining(Globals.z_track_position, segment_length)
+	var dx = -(base_segment.curve * base_percent)
+	var x = 0
 	var max_y = screen_size.y
 	var segment
 	#get_parent().print_tree_pretty()
@@ -79,8 +82,11 @@ func _draw():
 			print(Globals.z_track_position)
 		camera_position.z = Globals.z_track_position
 
-		project(segment.p1, camera_position)
-		project(segment.p2, camera_position)
+		project(segment.p1, camera_position + Vector3(-x, 0, 0))
+		project(segment.p2, camera_position + Vector3(-dx, 0, 0))
+
+		x  = x + dx;
+		dx = dx + segment.curve;
 
 		if ((segment.p1.camera.z <= camera_depth) || (segment.p2.screen.y >= max_y)):
 			continue;
@@ -128,6 +134,12 @@ func reset_road():
 
 func find_segment(z):
 	return segments[floori(z / segment_length) % segments.size()]
+
+
+func percent_remaining(n, total):
+	n = n
+	total = total
+	return (n % total) / total
 
 
 func project(p, camera_position):
