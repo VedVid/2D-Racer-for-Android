@@ -8,7 +8,7 @@ var decceleration = ceili(float(speed_max) / 4.0 / 60.0)
 var breaking = ceili(float(speed_max) / 2.5 / 60.0)
 var offroad_decceleration = ceili(float(speed_max) / 3.25 / 60.0)
 var offroad_limit = ceili(float(speed_max) / 4.0)
-var centrifugal = 0.3
+var centrifugal = 12
 
 var screen_size = Vector2.ZERO
 
@@ -75,9 +75,8 @@ func _process(delta):
 	if velocity.length() > 0:
 		velocity = velocity * speed_current
 
-	#$XPos.position += velocity * delta
-	#$XPos.position.x += velocity.x * speed_percent * player_segment.curve * centrifugal
-	$XPos.position -= velocity * delta * player_segment.curve
+	$XPos.position += velocity * delta
+	$XPos.position.x -= player_segment.curve * speed_percent * centrifugal
 	Globals.z_track_position += speed_current
 	$XPos.position.x = clamp(
 		$XPos.position.x,
