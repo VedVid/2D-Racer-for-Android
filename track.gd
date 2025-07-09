@@ -248,9 +248,9 @@ func add_road(enter, hold, leave, curve):
 	for i1 in enter:
 		add_segment(curve_ease_in(0, curve, float(i1) / float(enter)))
 	for i2 in hold:
-		add_segment(curve)
+		add_segment(curve_ease_in_out(curve, curve, float(i2) / float(hold)))
 	for i3 in leave:
-		add_segment(curve_ease_in_out(curve, 0, float(i3) / float(leave)))
+		add_segment(curve_ease_out(curve, 0, float(i3) / float(leave)))
 
 
 func add_straight(num):
