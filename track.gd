@@ -20,7 +20,7 @@ var fog_density = 50
 var road_width: int
 @export var lanes = 3
 var segment_length = 200
-var segments_amount = 5000
+var segments_amount = 0
 var rumble_length = 3
 var segments = []
 var track_length
@@ -37,15 +37,15 @@ var screen_size = Vector2.ZERO
 var road = {
 	length = {  # In amount of segments.
 		none = 0.0,
-		short = 25.0,
-		medium = 50.0,
-		long = 100.0,
+		short = 50.0,
+		medium = 100.0,
+		long = 200.0,
 	},
 	curve = {
 		none = 0.0,
-		easy = 2.0,
-		medium = 4.0,
-		hard = 6.0
+		easy = 4.0,
+		medium = 7.0,
+		hard = 10.0
 	}
 }
 
@@ -128,6 +128,9 @@ func reset_road():
 	add_straight(road.length.short)
 
 	track_length = segments.size() * segment_length
+
+	segments_amount = len(segments)
+	print(segments_amount)
 
 
 func find_segment(z):
