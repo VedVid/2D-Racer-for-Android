@@ -77,13 +77,11 @@ func _draw():
 		camera_position.x = player_x_rel
 		camera_position.y = camera_height
 		if segment.looped:
-			print(Globals.z_track_position)
 			Globals.z_track_position = 0
-			print(Globals.z_track_position)
 		camera_position.z = Globals.z_track_position
 
 		project(segment.p1, camera_position + Vector3(-x, 0, 0))
-		project(segment.p2, camera_position + Vector3(-dx, 0, 0))
+		project(segment.p2, camera_position + Vector3(-(x+dx), 0, 0))
 
 		x  = x + dx;
 		dx = dx + segment.curve;
