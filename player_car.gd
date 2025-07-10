@@ -10,6 +10,10 @@ var offroad_decceleration = ceili(float(speed_max) / 3.25 / 60.0)
 var offroad_limit = ceili(float(speed_max) / 4.0)
 var centrifugal = 11
 
+var sky_speed = 0.01
+var horizon_far_speed = 0.015
+var horizon_near_speed = 0.03
+
 var screen_size = Vector2.ZERO
 
 
@@ -25,7 +29,10 @@ func _process(delta):
 
 	var player_segment = track_node.find_segment(Globals.z_track_position + track_node.player_z)
 	var speed_percent = ceili(float(speed_current) / float(speed_max))
-	print(player_segment.index)
+
+	Globals.sky_offset += sky_speed * player_segment.curve * speed_percent
+	Globals.horizon_far_offset += horizon_far_speed * player_segment.curve * speed_percent
+	Globals.horizon_near_offset += horizon_near_speed * player_segment.curve * speed_percent
 
 	var velocity = Vector2.ZERO
 	var grav = Input.get_gravity()

@@ -106,6 +106,9 @@ func _draw():
 
 
 func _process(delta):
+	$Sky.offset.x = Globals.sky_offset
+	$HorizonFar.offset.x = Globals.horizon_far_offset
+	$HorizonNear.offset.x = Globals.horizon_near_offset
 	queue_redraw()
 
 
