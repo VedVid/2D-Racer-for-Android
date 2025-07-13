@@ -8,7 +8,7 @@ var decceleration = ceili(float(speed_max) / 4.0 / 60.0)
 var breaking = ceili(float(speed_max) / 2.5 / 60.0)
 var offroad_decceleration = ceili(float(speed_max) / 3.25 / 60.0)
 var offroad_limit = ceili(float(speed_max) / 4.0)
-var centrifugal = 0 #11
+var centrifugal = 11
 
 var sky_speed = 0.01
 var horizon_far_speed = 0.015
