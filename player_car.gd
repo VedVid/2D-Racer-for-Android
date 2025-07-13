@@ -2,7 +2,7 @@ extends Node2D
 
 
 @export var speed_current = 0
-var speed_max = 200  # == segment_length  # was 800
+var speed_max = 800  # 200 == segment_length  # was 800
 var acceleration = ceili(float(speed_max) / 5.0 / 60.0)
 var decceleration = ceili(float(speed_max) / 4.0 / 60.0)
 var breaking = ceili(float(speed_max) / 2.5 / 60.0)
@@ -28,7 +28,10 @@ func _process(delta):
 	var track_node = get_node("../Track")
 
 	var player_segment = track_node.find_segment(Globals.z_track_position + track_node.player_z)
-	print("player_segment: " + str(player_segment.index))
+	print("z_track_position:   " + str(Globals.z_track_position))
+	print("player_z:           " + str(track_node.player_z))
+	print("player_segment:     " + str(player_segment.index))
+	print()
 	var speed_percent = ceili(float(speed_current) / float(speed_max))
 
 	Globals.sky_offset += sky_speed * player_segment.curve * speed_percent

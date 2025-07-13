@@ -30,7 +30,7 @@ var camera_depth = 1 / tan((field_of_view / 2.0) * PI / 180)
 var camera_height = 1000
 var draw_distance = 300
 
-var player_z = camera_height * camera_depth
+var player_z = ceili(camera_height * camera_depth)
 
 var screen_size = Vector2.ZERO
 
@@ -128,7 +128,7 @@ func reset_road():
 	add_curve(road.length.short, -road.curve.hard)
 	add_straight(road.length.long)
 	add_s_curves()
-	add_straight(road.length.short)
+	add_last_straight()
 
 	track_length = segments.size() * segment_length
 
@@ -154,11 +154,11 @@ func project(p, camera_position):
 	p.screen.z = round(p.screen_scale * road_width  * screen_size.x / 2);
 
 
-func render_segment(width, lanes, x1, y1, w1, x2, y2, w2, colors, fog):
-	var r1 = rumble_width(w1, lanes)
-	var r2 = rumble_width(w2, lanes)
-	var l1 = lane_marker_width(w1, lanes)
-	var l2 = lane_marker_width(w2, lanes)
+func render_segment(width, llanes, x1, y1, w1, x2, y2, w2, colors, fog):
+	var r1 = rumble_width(w1, llanes)
+	var r2 = rumble_width(w2, llanes)
+	var l1 = lane_marker_width(w1, llanes)
+	var l2 = lane_marker_width(w2, llanes)
 
 	var lane_w1
 	var lane_w2
@@ -185,12 +185,12 @@ func render_segment(width, lanes, x1, y1, w1, x2, y2, w2, colors, fog):
 	render_fog(0, y1, width, y2-y1, fog)
 
 
-func rumble_width(projected_road_width, lanes):
-	return projected_road_width / max(6, 2 * lanes)
+func rumble_width(projected_road_width, llanes):
+	return projected_road_width / max(6, 2 * llanes)
 
 
-func lane_marker_width(projected_road_width, lanes):
-	return projected_road_width / max(32, 8 * lanes)
+func lane_marker_width(projected_road_width, llanes):
+	return projected_road_width / max(32, 8 * llanes)
 
 
 func render_polygon(x1, y1, x2, y2, x3, y3, x4, y4, color):
@@ -260,6 +260,10 @@ func add_straight(num):
 	if not num:
 		num = road.length.medium
 	add_road(num, num, num, 0)
+
+
+func add_last_straight():
+	add_road(200, 200, 200, 0)
 
 
 func add_curve(num, curve):
