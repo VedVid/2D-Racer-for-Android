@@ -10,7 +10,7 @@ var decceleration
 var breaking
 var offroad_decceleration
 var offroad_limit
-var centrifugal = 3
+var centrifugal = 5
 
 var sky_speed = 0.01
 var horizon_far_speed = 0.015
@@ -27,7 +27,7 @@ func _ready():
 	decceleration = ceili(float(speed_max) / 4.0 / 60.0)
 	breaking = ceili(float(speed_max) / 2.5 / 60.0)
 	offroad_decceleration = ceili(float(speed_max) / 3.25 / 60.0)
-	offroad_limit = ceili(float(speed_max) / 4.0)
+	offroad_limit = speed_max / 2
 	Globals.z_track_position = 0
 	$Area2D/AnimatedSprite2D.play("straight")
 	_set_control_scheme()
@@ -52,14 +52,14 @@ func _process(delta):
 			(grav.x > 2 and Globals.android_steering_scheme == "tilt") or
 			$Button_buttons_right.z_index == 1
 		):
-		velocity.x += 4
+		velocity.x += 8
 		$Area2D/AnimatedSprite2D.play("right")
 	elif (
 			Input.is_action_pressed("steer_left") or
 			(grav.x < -2 and Globals.android_steering_scheme == "tilt") or
 			$Button_buttons_left.z_index == 1
 		):
-		velocity.x -= 4
+		velocity.x -= 8
 		$Area2D/AnimatedSprite2D.play("left")
 	else:
 		$Area2D/AnimatedSprite2D.play("straight")
