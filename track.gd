@@ -15,7 +15,7 @@ var colors_dark = {
 }
 var color_fog = Color.DARK_GRAY
 
-var fog_density = 50
+var fog_density = 100
 
 var road_width: int
 @export var lanes = 3
@@ -28,7 +28,7 @@ var track_length
 var field_of_view = 100
 var camera_depth = 1 / tan((field_of_view / 2.0) * PI / 180)
 var camera_height = 1000
-var draw_distance = 300
+var draw_distance = 200
 
 var player_z = ceili(camera_height * camera_depth)
 
