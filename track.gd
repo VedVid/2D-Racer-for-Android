@@ -46,6 +46,12 @@ var road = {
 		easy = 10.0,
 		medium = 15.0,
 		hard = 22.0
+	},
+	hill = {
+		none = 0.0,
+		low = 20.0,
+		medium = 40.0,
+		high = 60.0
 	}
 }
 
@@ -118,14 +124,14 @@ func reset_road():
 	add_straight(road.length.short)
 	add_s_curves()
 	add_straight(road.length.long)
-	add_curve(road.length.medium, road.curve.medium)
-	add_curve(road.length.long, road.curve.medium)
+	add_curve(road.length.medium, road.curve.medium, road.hill.low)
+	add_curve(road.length.long, road.curve.medium, road.hill.high)
 	add_straight(road.length.long)
 	add_s_curves()
-	add_curve(road.length.long, -road.curve.medium)
-	add_curve(road.length.long, road.curve.easy)
+	add_curve(road.length.long, -road.curve.medium, road.hill.none)
+	add_curve(road.length.long, road.curve.easy, road.hill.none)
 	add_straight(null)
-	add_curve(road.length.short, -road.curve.hard)
+	add_curve(road.length.short, -road.curve.hard, road.hill.low)
 	add_straight(road.length.long)
 	add_s_curves()
 	add_last_straight()
@@ -219,7 +225,7 @@ func curve_ease_in_out(a, b, percent):
 	return a + (b - a) * ((-cos(percent * PI) / 2.0) + 0.5)
 
 
-func add_segment(curve):
+func add_segment(curve, y):
 	var i = len(segments)
 	var new_segment = {
 		index = i,
@@ -242,41 +248,109 @@ func add_segment(curve):
 	}
 	new_segment.p1.world.x = screen_size.x / 2
 	new_segment.p2.world.x = screen_size.x / 2
+	new_segment.p1.world.y = last_y()
+	new_segment.p2.world.y = y
 	new_segment.p1.world.z = i * segment_length
 	new_segment.p2.world.z = (i + 1) * segment_length
 	segments.append(new_segment)
 
 
-func add_road(enter, hold, leave, curve):
+func add_road(enter, hold, leave, curve, y):
+	var start_y = last_y()
+	var end_y = start_y + ceili(y * segment_length)
+	var n = enter + hold + leave
+	var total = enter + hold + leave
+	"""
+	  for(n = 0 ; n < leave ; n++)
+		addSegment(Util.easeInOut(curve, 0, n/leave), Util.easeInOut(startY, endY, (enter+hold+n)/total));
+	"""
 	for i1 in enter:
-		add_segment(curve_ease_in(0, curve, float(i1) / float(enter)))
+		add_segment(
+			curve_ease_in(0, curve, float(n) / float(enter)),
+			curve_ease_in_out(start_y, end_y, float(n) / float(total))
+		)
 	for i2 in hold:
-		add_segment(curve_ease_in_out(curve, curve, float(i2) / float(hold)))
+		add_segment(
+			curve,
+			curve_ease_in_out(start_y, end_y, float(enter+n) / float(total))
+		)
 	for i3 in leave:
-		add_segment(curve_ease_out(curve, 0, float(i3) / float(leave)))
+		add_segment(
+			curve_ease_in_out(curve, 0, float(n) / float(leave)),
+			curve_ease_out(start_y, end_y, float(enter+hold+n) / float(total))
+		)
 
 
 func add_straight(num):
 	if not num:
 		num = road.length.medium
-	add_road(num, num, num, 0)
+	add_road(num, num, num, 0, 0)
 
 
 func add_last_straight():
-	add_road(200, 200, 200, 0)
+	add_road(200, 200, 200, 0, 0)
 
 
-func add_curve(num, curve):
+func add_curve(num, curve, height):
 	if not num:
 		num = road.length.medium
 	if not curve:
-		num = road.curve.medium
-	add_road(num, num, num, curve)
+		curve = road.curve.medium
+	if not height:
+		height = road.hill.none
+	add_road(num, num, num, curve, height)
 
 
 func add_s_curves():
-	add_road(road.length.medium, road.length.medium, road.length.medium,  -road.curve.easy)
-	add_road(road.length.medium, road.length.medium, road.length.medium,   road.curve.medium)
-	add_road(road.length.medium, road.length.medium, road.length.medium,   road.curve.easy)
-	add_road(road.length.medium, road.length.medium, road.length.medium,  -road.curve.easy)
-	add_road(road.length.medium, road.length.medium, road.length.medium,  -road.curve.medium)
+	add_road(
+		road.length.medium,
+		road.length.medium,
+		road.length.medium,
+		-road.curve.easy,
+		road.hill.none
+	)
+	add_road(
+		road.length.medium,
+		road.length.medium,
+		road.length.medium,
+		road.curve.medium,
+		road.hill.medium
+	)
+	add_road(
+		road.length.medium,
+		road.length.medium,
+		road.length.medium,
+		road.curve.easy,
+		road.hill.low
+	)
+	add_road(
+		road.length.medium,
+		road.length.medium,
+		road.length.medium,
+		-road.curve.easy,
+		road.hill.medium
+	)
+	add_road(
+		road.length.medium,
+		road.length.medium,
+		road.length.medium,
+		-road.curve.medium,
+		road.hill.medium
+	)
+
+
+func add_low_rolling_hills(num, height):
+	if not num:
+		num = road.length.short
+	if not height:
+		height = road.hill.low
+	add_road(num, num, num, 0, ceili(float(height) / 2.0))
+	add_road(num, num, num, 0, -height)
+	add_road(num, num, num, 0, height)
+	add_road(num, num, num, 0, 0)
+	add_road(num, num, num, 0, ceili(float(height) / 2.0))
+	add_road(num, num, num, 0, 0)
+
+
+func last_y():
+	return 0 if len(segments) == 0 else segments[len(segments)-1].p2.world.y
