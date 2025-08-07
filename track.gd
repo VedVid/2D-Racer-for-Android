@@ -296,6 +296,20 @@ func add_last_straight():
 	add_road(200, 200, 200, 0, 0)
 
 
+func add_hill(num, height):
+	if not num:
+		num = road.length.medium
+	if not height:
+		height = road.hill.medium
+	add_road(num, num, num, 0, height)
+
+
+func add_downhill_to_end(num):
+	if not num:
+		num = 200
+		add_road(num, num, num, -road.curve.easy, -last_y()/segment_length)
+
+
 func add_curve(num, curve, height):
 	if not num:
 		num = road.length.medium
