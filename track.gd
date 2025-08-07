@@ -69,6 +69,9 @@ func _draw():
 	var x = 0
 	var max_y = screen_size.y
 	var segment
+	var player_segment = find_segment(Globals.z_track_position + player_z)
+	var player_percent = percent_remaining(Globals.z_track_position + player_z, segment_length)
+	var player_y = interpolate(player_segment.p1.world.y, player_segment.p2.world.y, player_percent)
 	#get_parent().print_tree_pretty()
 	var player_x_rel = get_node("/root/Main/PlayerCar/XPos").position.x
 	var camera_position = Vector3.ZERO
@@ -86,13 +89,15 @@ func _draw():
 			Globals.z_track_position = 0
 		camera_position.z = Globals.z_track_position
 
-		project(segment.p1, camera_position + Vector3(-x, 0, 0))
-		project(segment.p2, camera_position + Vector3(-(x+dx), 0, 0))
+		#project(segment.p1, camera_position + Vector3(-x, 0, 0))
+		#project(segment.p2, camera_position + Vector3(-(x+dx), 0, 0))
+		project(segment.p1, camera_position + Vector3(-x, player_y, 0))
+		project(segment.p2, camera_position + Vector3(-(x+dx), player_y, 0))
 
 		x  = x + dx;
 		dx = dx + segment.curve;
 
-		if ((segment.p1.camera.z <= camera_depth) || (segment.p2.screen.y >= max_y)):
+		if ((segment.p1.camera.z <= camera_depth) || (segment.p2.screen.y >= segment.p1.screen.y) || (segment.p2.screen.y >= max_y)):
 			continue;
 
 		render_segment(
@@ -257,27 +262,27 @@ func add_segment(curve, y):
 
 func add_road(enter, hold, leave, curve, y):
 	var start_y = last_y()
-	var end_y = start_y + ceili(y * segment_length)
+	var end_y = start_y + y * segment_length
 	var n = enter + hold + leave
 	var total = enter + hold + leave
 	"""
 	  for(n = 0 ; n < leave ; n++)
 		addSegment(Util.easeInOut(curve, 0, n/leave), Util.easeInOut(startY, endY, (enter+hold+n)/total));
 	"""
-	for i1 in enter:
+	for i1 in range(enter):
 		add_segment(
-			curve_ease_in(0, curve, float(n) / float(enter)),
-			curve_ease_in_out(start_y, end_y, float(n) / float(total))
+			curve_ease_in(0, curve, n / enter),
+			curve_ease_in_out(start_y, end_y, float(n) / total)
 		)
-	for i2 in hold:
+	for i2 in range(hold):
 		add_segment(
 			curve,
 			curve_ease_in_out(start_y, end_y, float(enter+n) / float(total))
 		)
-	for i3 in leave:
+	for i3 in range(leave):
 		add_segment(
-			curve_ease_in_out(curve, 0, float(n) / float(leave)),
-			curve_ease_out(start_y, end_y, float(enter+hold+n) / float(total))
+			curve_ease_in_out(curve, 0, n / leave),
+			curve_ease_in_out(start_y, end_y, float(enter+hold+n) / total)
 		)
 
 
@@ -344,13 +349,16 @@ func add_low_rolling_hills(num, height):
 		num = road.length.short
 	if not height:
 		height = road.hill.low
-	add_road(num, num, num, 0, ceili(float(height) / 2.0))
+	add_road(num, num, num, 0, height / 2)
 	add_road(num, num, num, 0, -height)
 	add_road(num, num, num, 0, height)
 	add_road(num, num, num, 0, 0)
-	add_road(num, num, num, 0, ceili(float(height) / 2.0))
 	add_road(num, num, num, 0, 0)
 
 
 func last_y():
 	return 0 if len(segments) == 0 else segments[len(segments)-1].p2.world.y
+
+
+func interpolate(a, b, percent):
+	return a + (b - a) * percent
