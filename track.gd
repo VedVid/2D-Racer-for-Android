@@ -73,6 +73,7 @@ func _draw():
 	var player_percent = percent_remaining(Globals.z_track_position + player_z, segment_length)
 	var player_y = interpolate(player_segment.p1.world.y, player_segment.p2.world.y, player_percent)
 	#get_parent().print_tree_pretty()
+	var player_area2d = get_node("/root/Main/PlayerCar/Area2D")
 	var player_x_rel = get_node("/root/Main/PlayerCar/XPos").position.x
 	var camera_position = Vector3.ZERO
 
@@ -114,6 +115,8 @@ func _draw():
 		)
 
 		max_y = segment.p2.screen.y
+
+		player_area2d.position.y = 640 - (camera_depth / player_z * interpolate(player_segment.p1.camera.y, player_segment.p2.camera.y, player_percent))
 
 
 func _process(delta):
@@ -262,7 +265,7 @@ func add_segment(curve, y):
 
 func add_road(enter, hold, leave, curve, y):
 	var start_y = last_y()
-	var end_y = start_y + y * segment_length
+	var end_y = start_y + (ceili(y) * segment_length)
 	var n = enter + hold + leave
 	var total = enter + hold + leave
 	"""
