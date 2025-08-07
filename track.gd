@@ -15,20 +15,20 @@ var colors_dark = {
 }
 var color_fog = Color.DARK_GRAY
 
-var fog_density = 100
+var fog_density = 50
 
 var road_width: int
 @export var lanes = 3
-var segment_length = 400
+var segment_length = 200
 var segments_amount = 0
-var rumble_length = 2
+var rumble_length = 3
 var segments = []
 var track_length
 
 var field_of_view = 100
 var camera_depth = 1 / tan((field_of_view / 2.0) * PI / 180)
 var camera_height = 1000
-var draw_distance = 200
+var draw_distance = 300
 
 var player_z = ceili(camera_height * camera_depth)
 
@@ -37,21 +37,15 @@ var screen_size = Vector2.ZERO
 var road = {
 	length = {  # In amount of segments.
 		none = 0.0,
-		short = 25.0,
-		medium = 50.0,
-		long = 100.0,
+		short = 50.0,
+		medium = 100.0,
+		long = 200.0,
 	},
 	curve = {
 		none = 0.0,
-		easy = 10.0,
-		medium = 15.0,
-		hard = 22.0
-	},
-	hill = {
-		none = 0.0,
-		low = 20.0,
-		medium = 40.0,
-		high = 60.0
+		easy = 4.0,
+		medium = 7.0,
+		hard = 10.0
 	}
 }
 
@@ -69,11 +63,7 @@ func _draw():
 	var x = 0
 	var max_y = screen_size.y
 	var segment
-	var player_segment = find_segment(Globals.z_track_position + player_z)
-	var player_percent = percent_remaining(Globals.z_track_position + player_z, segment_length)
-	var player_y = interpolate(player_segment.p1.world.y, player_segment.p2.world.y, player_percent)
 	#get_parent().print_tree_pretty()
-	var player_area2d = get_node("/root/Main/PlayerCar/Area2D")
 	var player_x_rel = get_node("/root/Main/PlayerCar/XPos").position.x
 	var camera_position = Vector3.ZERO
 
@@ -90,15 +80,13 @@ func _draw():
 			Globals.z_track_position = 0
 		camera_position.z = Globals.z_track_position
 
-		#project(segment.p1, camera_position + Vector3(-x, 0, 0))
-		#project(segment.p2, camera_position + Vector3(-(x+dx), 0, 0))
-		project(segment.p1, camera_position + Vector3(-x, player_y, 0))
-		project(segment.p2, camera_position + Vector3(-(x+dx), player_y, 0))
+		project(segment.p1, camera_position + Vector3(-x, 0, 0))
+		project(segment.p2, camera_position + Vector3(-(x+dx), 0, 0))
 
 		x  = x + dx;
 		dx = dx + segment.curve;
 
-		if ((segment.p1.camera.z <= camera_depth) || (segment.p2.screen.y >= segment.p1.screen.y) || (segment.p2.screen.y >= max_y)):
+		if ((segment.p1.camera.z <= camera_depth) || (segment.p2.screen.y >= max_y)):
 			continue;
 
 		render_segment(
@@ -116,8 +104,6 @@ func _draw():
 
 		max_y = segment.p2.screen.y
 
-		player_area2d.position.y = 640 - (camera_depth / player_z * interpolate(player_segment.p1.camera.y, player_segment.p2.camera.y, player_percent))
-
 
 func _process(delta):
 	$Sky.offset.x = Globals.sky_offset
@@ -132,14 +118,14 @@ func reset_road():
 	add_straight(road.length.short)
 	add_s_curves()
 	add_straight(road.length.long)
-	add_curve(road.length.medium, road.curve.medium, road.hill.low)
-	add_curve(road.length.long, road.curve.medium, road.hill.high)
+	add_curve(road.length.medium, road.curve.medium)
+	add_curve(road.length.long, road.curve.medium)
 	add_straight(road.length.long)
 	add_s_curves()
-	add_curve(road.length.long, -road.curve.medium, road.hill.none)
-	add_curve(road.length.long, road.curve.easy, road.hill.none)
+	add_curve(road.length.long, -road.curve.medium)
+	add_curve(road.length.long, road.curve.easy)
 	add_straight(null)
-	add_curve(road.length.short, -road.curve.hard, road.hill.low)
+	add_curve(road.length.short, -road.curve.hard)
 	add_straight(road.length.long)
 	add_s_curves()
 	add_last_straight()
@@ -233,7 +219,7 @@ func curve_ease_in_out(a, b, percent):
 	return a + (b - a) * ((-cos(percent * PI) / 2.0) + 0.5)
 
 
-func add_segment(curve, y):
+func add_segment(curve):
 	var i = len(segments)
 	var new_segment = {
 		index = i,
@@ -256,126 +242,41 @@ func add_segment(curve, y):
 	}
 	new_segment.p1.world.x = screen_size.x / 2
 	new_segment.p2.world.x = screen_size.x / 2
-	new_segment.p1.world.y = last_y()
-	new_segment.p2.world.y = y
 	new_segment.p1.world.z = i * segment_length
 	new_segment.p2.world.z = (i + 1) * segment_length
 	segments.append(new_segment)
 
 
-func add_road(enter, hold, leave, curve, y):
-	var start_y = last_y()
-	var end_y = start_y + (ceili(y) * segment_length)
-	var n = enter + hold + leave
-	var total = enter + hold + leave
-	"""
-	  for(n = 0 ; n < leave ; n++)
-		addSegment(Util.easeInOut(curve, 0, n/leave), Util.easeInOut(startY, endY, (enter+hold+n)/total));
-	"""
-	for i1 in range(enter):
-		add_segment(
-			curve_ease_in(0, curve, n / enter),
-			curve_ease_in_out(start_y, end_y, float(n) / total)
-		)
-	for i2 in range(hold):
-		add_segment(
-			curve,
-			curve_ease_in_out(start_y, end_y, float(enter+n) / float(total))
-		)
-	for i3 in range(leave):
-		add_segment(
-			curve_ease_in_out(curve, 0, n / leave),
-			curve_ease_in_out(start_y, end_y, float(enter+hold+n) / total)
-		)
+func add_road(enter, hold, leave, curve):
+	for i1 in enter:
+		add_segment(curve_ease_in(0, curve, float(i1) / float(enter)))
+	for i2 in hold:
+		add_segment(curve_ease_in_out(curve, curve, float(i2) / float(hold)))
+	for i3 in leave:
+		add_segment(curve_ease_out(curve, 0, float(i3) / float(leave)))
 
 
 func add_straight(num):
 	if not num:
 		num = road.length.medium
-	add_road(num, num, num, 0, 0)
+	add_road(num, num, num, 0)
 
 
 func add_last_straight():
-	add_road(200, 200, 200, 0, 0)
+	add_road(200, 200, 200, 0)
 
 
-func add_hill(num, height):
-	if not num:
-		num = road.length.medium
-	if not height:
-		height = road.hill.medium
-	add_road(num, num, num, 0, height)
-
-
-func add_downhill_to_end(num):
-	if not num:
-		num = 200
-		add_road(num, num, num, -road.curve.easy, -last_y()/segment_length)
-
-
-func add_curve(num, curve, height):
+func add_curve(num, curve):
 	if not num:
 		num = road.length.medium
 	if not curve:
-		curve = road.curve.medium
-	if not height:
-		height = road.hill.none
-	add_road(num, num, num, curve, height)
+		num = road.curve.medium
+	add_road(num, num, num, curve)
 
 
 func add_s_curves():
-	add_road(
-		road.length.medium,
-		road.length.medium,
-		road.length.medium,
-		-road.curve.easy,
-		road.hill.none
-	)
-	add_road(
-		road.length.medium,
-		road.length.medium,
-		road.length.medium,
-		road.curve.medium,
-		road.hill.medium
-	)
-	add_road(
-		road.length.medium,
-		road.length.medium,
-		road.length.medium,
-		road.curve.easy,
-		road.hill.low
-	)
-	add_road(
-		road.length.medium,
-		road.length.medium,
-		road.length.medium,
-		-road.curve.easy,
-		road.hill.medium
-	)
-	add_road(
-		road.length.medium,
-		road.length.medium,
-		road.length.medium,
-		-road.curve.medium,
-		road.hill.medium
-	)
-
-
-func add_low_rolling_hills(num, height):
-	if not num:
-		num = road.length.short
-	if not height:
-		height = road.hill.low
-	add_road(num, num, num, 0, height / 2)
-	add_road(num, num, num, 0, -height)
-	add_road(num, num, num, 0, height)
-	add_road(num, num, num, 0, 0)
-	add_road(num, num, num, 0, 0)
-
-
-func last_y():
-	return 0 if len(segments) == 0 else segments[len(segments)-1].p2.world.y
-
-
-func interpolate(a, b, percent):
-	return a + (b - a) * percent
+	add_road(road.length.medium, road.length.medium, road.length.medium,  -road.curve.easy)
+	add_road(road.length.medium, road.length.medium, road.length.medium,   road.curve.medium)
+	add_road(road.length.medium, road.length.medium, road.length.medium,   road.curve.easy)
+	add_road(road.length.medium, road.length.medium, road.length.medium,  -road.curve.easy)
+	add_road(road.length.medium, road.length.medium, road.length.medium,  -road.curve.medium)

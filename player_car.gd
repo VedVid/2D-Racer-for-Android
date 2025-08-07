@@ -1,16 +1,14 @@
 extends Node2D
 
 
-var track_node
-
 @export var speed_current = 0
-var speed_max  # track_node.segment_length
-var acceleration
-var decceleration
-var breaking
-var offroad_decceleration
-var offroad_limit
-var centrifugal = 5
+var speed_max = 800  # 200 == segment_length  # was 800
+var acceleration = ceili(float(speed_max) / 5.0 / 60.0)
+var decceleration = ceili(float(speed_max) / 4.0 / 60.0)
+var breaking = ceili(float(speed_max) / 2.5 / 60.0)
+var offroad_decceleration = ceili(float(speed_max) / 3.25 / 60.0)
+var offroad_limit = ceili(float(speed_max) / 4.0)
+var centrifugal = 11
 
 var sky_speed = 0.01
 var horizon_far_speed = 0.015
@@ -21,19 +19,14 @@ var screen_size = Vector2.ZERO
 
 func _ready():
 	screen_size = get_viewport_rect().size
-	track_node = get_node("../Track")
-	speed_max = track_node.segment_length
-	acceleration = ceili(float(speed_max) / 5.0 / 60.0)
-	decceleration = ceili(float(speed_max) / 4.0 / 60.0)
-	breaking = ceili(float(speed_max) / 2.5 / 60.0)
-	offroad_decceleration = ceili(float(speed_max) / 3.25 / 60.0)
-	offroad_limit = speed_max / 2
 	Globals.z_track_position = 0
 	$Area2D/AnimatedSprite2D.play("straight")
 	_set_control_scheme()
 
 
 func _process(delta):
+	var track_node = get_node("../Track")
+
 	var player_segment = track_node.find_segment(Globals.z_track_position + track_node.player_z)
 	print("z_track_position:   " + str(Globals.z_track_position))
 	print("player_z:           " + str(track_node.player_z))
@@ -52,14 +45,14 @@ func _process(delta):
 			(grav.x > 2 and Globals.android_steering_scheme == "tilt") or
 			$Button_buttons_right.z_index == 1
 		):
-		velocity.x += 8
+		velocity.x += 4
 		$Area2D/AnimatedSprite2D.play("right")
 	elif (
 			Input.is_action_pressed("steer_left") or
 			(grav.x < -2 and Globals.android_steering_scheme == "tilt") or
 			$Button_buttons_left.z_index == 1
 		):
-		velocity.x -= 8
+		velocity.x -= 4
 		$Area2D/AnimatedSprite2D.play("left")
 	else:
 		$Area2D/AnimatedSprite2D.play("straight")
