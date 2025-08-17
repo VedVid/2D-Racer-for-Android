@@ -269,18 +269,22 @@ func _on_end_game_pressed():
 
 func on_rewarded_ad_failed_to_load(adError : LoadAdError) -> void:
 	print(adError.message)
+	print("rv ad failed to load")
 
 
 func on_rewarded_ad_loaded(rewarded_ad : RewardedAd) -> void:
 	self.rewarded_ad = rewarded_ad
+	print("rv ad loaded" + str(rewarded_ad._uid))
 
 
 func on_interstitial_ad_failed_to_load(adError : LoadAdError) -> void:
 	print(adError.message)
+	print("interstitial ad failed to load")
 
 
 func on_interstitial_ad_loaded(interstitial_ad : InterstitialAd) -> void:
 	self.interstitial_ad = interstitial_ad
+	print("interstitial ad loaded" + str(interstitial_ad._uid))
 
 
 func _on_watch_ad_pressed():
