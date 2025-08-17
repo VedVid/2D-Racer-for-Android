@@ -32,6 +32,8 @@ func _ready():
 	screen_size = get_viewport_rect().size
 	$ColorRect_no_fuel.position.x = (screen_size.x / 2) - ($ColorRect_no_fuel.size.x / 2)
 	$ColorRect_no_fuel.position.y = (screen_size.y / 2) - ($ColorRect_no_fuel.size.y / 2)
+	$ColorRect_no_fill.position.x = (screen_size.x / 2) - ($ColorRect_no_fill.size.x / 2)
+	$ColorRect_no_fill.position.y = (screen_size.y / 2) - ($ColorRect_no_fill.size.y / 2)
 	Globals.z_track_position = 0
 	$Area2D/AnimatedSprite2D.play("straight")
 	_set_control_scheme()
@@ -277,4 +279,8 @@ func _on_watch_ad_pressed():
 	if rewarded_ad:
 		rewarded_ad.show()
 	else:
-		print("No ad to show. Display popup instead")
+		$ColorRect_no_fill.visible = true
+
+
+func _on_button_pressed() -> void:
+	$ColorRect_no_fill.visible = false
