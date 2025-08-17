@@ -23,12 +23,16 @@ var screen_size = Vector2.ZERO
 
 var rewarded_ad : RewardedAd
 var rewarded_ad_load_callback := RewardedAdLoadCallback.new()
+var interstitial_ad : InterstitialAd
+var interstitial_ad_load_callback := InterstitialAdLoadCallback.new()
 
 
 func _ready():
 	MobileAds.initialize()
 	rewarded_ad_load_callback.on_ad_failed_to_load = on_rewarded_ad_failed_to_load
 	rewarded_ad_load_callback.on_ad_loaded = on_rewarded_ad_loaded
+	interstitial_ad_load_callback.on_ad_failed_to_load = on_interstitial_ad_failed_to_load
+	interstitial_ad_load_callback.on_ad_loaded = on_interstitial_ad_loaded
 	screen_size = get_viewport_rect().size
 	$ColorRect_no_fuel.position.x = (screen_size.x / 2) - ($ColorRect_no_fuel.size.x / 2)
 	$ColorRect_no_fuel.position.y = (screen_size.y / 2) - ($ColorRect_no_fuel.size.y / 2)
@@ -37,12 +41,10 @@ func _ready():
 	Globals.z_track_position = 0
 	$Area2D/AnimatedSprite2D.play("straight")
 	_set_control_scheme()
-	var unit_id : String
-	if OS.get_name() == "Android":
-		unit_id = "ca-app-pub-3940256099942544/6300978111"
-	elif OS.get_name() == "iOS":
-		unit_id = "ca-app-pub-3940256099942544/2934735716"
-	var ad_view := AdView.new(unit_id, AdSize.BANNER, AdPosition.Values.TOP)
+	var interstitial_unit_id = "ca-app-pub-3940256099942544/1033173712"
+	InterstitialAdLoader.new().load(interstitial_unit_id, AdRequest.new(), interstitial_ad_load_callback)
+	var banner_unit_id = "ca-app-pub-3940256099942544/6300978111"
+	var ad_view := AdView.new(banner_unit_id, AdSize.BANNER, AdPosition.Values.TOP)
 	ad_view.load_ad(AdRequest.new())
 
 
@@ -101,9 +103,13 @@ func _process(delta):
 		if speed_current < 0:
 			speed_current = 0
 
-	if fuel <= 0 and speed_current <= 0:
+	if fuel <= 0 and speed_current <= 0 and $ColorRect_no_fuel.visible == false:
+		if interstitial_ad:
+			interstitial_ad.show()
 		$ColorRect_no_fuel/PointsText.text = "You got " + str(points) + " points"
 		$ColorRect_no_fuel.visible = true
+		var rv_unit_id = "ca-app-pub-3940256099942544/5224354917"
+		RewardedAdLoader.new().load(rv_unit_id, AdRequest.new(), rewarded_ad_load_callback)
 
 	if (($XPos.position.x < (-track_node.road_width / 2) or
 		$XPos.position.x > track_node.road_width * 1.5) and
@@ -269,13 +275,15 @@ func on_rewarded_ad_loaded(rewarded_ad : RewardedAd) -> void:
 	self.rewarded_ad = rewarded_ad
 
 
+func on_interstitial_ad_failed_to_load(adError : LoadAdError) -> void:
+	print(adError.message)
+
+
+func on_interstitial_ad_loaded(interstitial_ad : InterstitialAd) -> void:
+	self.interstitial_ad = interstitial_ad
+
+
 func _on_watch_ad_pressed():
-	var unit_id : String
-	if OS.get_name() == "Android":
-		unit_id = "ca-app-pub-3940256099942544/5224354917"
-	elif OS.get_name() == "iOS":
-		unit_id = "ca-app-pub-3940256099942544/1712485313"
-	RewardedAdLoader.new().load(unit_id, AdRequest.new(), rewarded_ad_load_callback)
 	if rewarded_ad:
 		rewarded_ad.show()
 	else:
