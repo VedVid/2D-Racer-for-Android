@@ -259,6 +259,7 @@ offset_right = 50.0
 offset_bottom = 50.0
 
 [node name="ColorRect" type="ColorRect" parent="Label_fuel"]
+layout_mode = 0
 offset_left = -5.0
 offset_right = 93.0
 offset_bottom = 24.0
@@ -266,6 +267,7 @@ color = Color(0.215686, 0.215686, 0.215686, 0.615686)
 
 [node name="Label" type="Label" parent="Label_fuel"]
 modulate = Color(0.884314, 3.20069e-06, 1.15514e-06, 1)
+layout_mode = 0
 offset_right = 88.0
 offset_bottom = 23.0
 text = "FUEL: 100%"
@@ -279,6 +281,7 @@ offset_right = 1160.0
 offset_bottom = 50.0
 
 [node name="ColorRect" type="ColorRect" parent="Label_Points"]
+layout_mode = 0
 offset_left = -5.0
 offset_right = 155.0
 offset_bottom = 24.0
@@ -286,12 +289,12 @@ color = Color(0.215686, 0.215686, 0.215686, 0.615686)
 
 [node name="Label" type="Label" parent="Label_Points"]
 modulate = Color(0.823529, 0.756863, 0, 1)
+layout_mode = 0
 offset_right = 88.0
 offset_bottom = 23.0
 text = "POINTS: 0"
 
 [node name="ColorRect_no_fuel" type="ColorRect" parent="."]
-visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -362,4 +365,5 @@ text = "End game"
 [connection signal="released" from="Button_buttons_left/Touch_buttons_left" to="." method="_on_touch_buttons_left_released"]
 [connection signal="pressed" from="Button_buttons_right/Touch_buttons_right" to="." method="_on_touch_buttons_right_pressed"]
 [connection signal="released" from="Button_buttons_right/Touch_buttons_right" to="." method="_on_touch_buttons_right_released"]
+[connection signal="pressed" from="ColorRect_no_fuel/WatchAd" to="." method="_on_watch_ad_pressed"]
 [connection signal="pressed" from="ColorRect_no_fuel/EndGame" to="." method="_on_end_game_pressed"]

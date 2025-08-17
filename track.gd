@@ -133,7 +133,6 @@ func reset_road():
 	track_length = segments.size() * segment_length
 
 	segments_amount = len(segments)
-	print(segments_amount)
 
 
 func find_segment(z):

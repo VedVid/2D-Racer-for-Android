@@ -21,8 +21,25 @@ var horizon_near_speed = 0.03
 
 var screen_size = Vector2.ZERO
 
+var rewarded_ad: RewardedAd
+var full_screen_content_callback := FullScreenContentCallback.new()
+var on_user_earned_reward_listener := OnUserEarnedRewardListener.new()
+
 
 func _ready():
+	MobileAds.initialize()
+	full_screen_content_callback.on_ad_clicked = func():
+		print("on_ad_clicked")
+	full_screen_content_callback.on_ad_dismissed_full_screen_content = func() -> void:
+		print("on_ad_dismissed_full_screen_content")
+	full_screen_content_callback.on_ad_failed_to_show_full_screen_content = func(ad_error : AdError) -> void:
+		print("on_ad_failed_to_show_full_screen_content")
+	full_screen_content_callback.on_ad_impression = func() -> void:
+		print("on_ad_impression")
+	full_screen_content_callback.on_ad_showed_full_screen_content = func() -> void:
+		print("on_ad_showed_full_screen_content")
+	on_user_earned_reward_listener.on_user_earned_reward = func(rewarded_item : RewardedItem):
+		print("on_user_earned_reward, rewarded_item: rewarded", rewarded_item.amount, rewarded_item.type)
 	screen_size = get_viewport_rect().size
 	$ColorRect_no_fuel.position.x = (screen_size.x / 2) - ($ColorRect_no_fuel.size.x / 2)
 	$ColorRect_no_fuel.position.y = (screen_size.y / 2) - ($ColorRect_no_fuel.size.y / 2)
@@ -35,10 +52,7 @@ func _process(delta):
 	var track_node = get_node("../Track")
 
 	var player_segment = track_node.find_segment(Globals.z_track_position + track_node.player_z)
-	print("z_track_position:   " + str(Globals.z_track_position))
-	print("player_z:           " + str(track_node.player_z))
-	print("player_segment:     " + str(player_segment.index))
-	print()
+
 	var speed_percent = ceili(float(speed_current) / float(speed_max))
 
 	Globals.sky_offset += sky_speed * player_segment.curve * speed_percent
@@ -246,3 +260,35 @@ func _on_button_debug_change_android_steering_pressed():
 
 func _on_end_game_pressed():
 	get_tree().quit()
+
+
+func _on_watch_ad_pressed():
+	print("_on_watch_ad_pressed() started")
+	print("rewarded_ad...")
+	if rewarded_ad:
+		print("found, destroying...")
+		rewarded_ad.destroy()
+		rewarded_ad = null
+		print("old rewarded_ad destroyed")
+	else:
+		print("not found")
+
+	var unit_id = "ca-app-pub-3940256099942544/5224354917"
+	print("unit_id set to", unit_id)
+
+	var rewarded_ad_load_callback := RewardedAdLoadCallback.new()
+	print("new rewarded_ad_load_callback.on_ad_failed_to_load created")
+	rewarded_ad_load_callback.on_ad_failed_to_load = func(adError : LoadAdError) -> void:
+		print(adError.message)
+
+	print("new rewarded_ad_load_callback.on_ad_loaded created")
+	rewarded_ad_load_callback.on_ad_loaded = func(rewarded_ad : RewardedAd) -> void:
+		print("rewarded ad loaded" + str(rewarded_ad._uid))
+		rewarded_ad = rewarded_ad
+		rewarded_ad.full_screen_content_callback = full_screen_content_callback
+
+	print("trying to load new ad...")
+	RewardedAdLoader.new().load(unit_id, AdRequest.new(), rewarded_ad_load_callback)
+
+	if rewarded_ad:
+		rewarded_ad.show(on_user_earned_reward_listener)
