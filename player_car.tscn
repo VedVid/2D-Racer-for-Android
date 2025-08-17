@@ -250,6 +250,26 @@ text = "RIGHT"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Label_fuel" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 50.0
+offset_bottom = 50.0
+
+[node name="ColorRect" type="ColorRect" parent="Label_fuel"]
+offset_left = -5.0
+offset_right = 93.0
+offset_bottom = 24.0
+color = Color(0.215686, 0.215686, 0.215686, 0.615686)
+
+[node name="Label" type="Label" parent="Label_fuel"]
+modulate = Color(0.884314, 3.20069e-06, 1.15514e-06, 1)
+offset_right = 88.0
+offset_bottom = 23.0
+text = "FUEL: 100%"
+
 [connection signal="pressed" from="Button_debug_change_android_steering" to="." method="_on_button_debug_change_android_steering_pressed"]
 [connection signal="pressed" from="Button_tilt_acc/Touch_tilt_acc" to="." method="_on_touch_tilt_acc_pressed"]
 [connection signal="released" from="Button_tilt_acc/Touch_tilt_acc" to="." method="_on_touch_tilt_acc_released"]

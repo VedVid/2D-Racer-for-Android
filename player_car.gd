@@ -10,6 +10,9 @@ var offroad_decceleration = ceili(float(speed_max) / 3.25 / 60.0)
 var offroad_limit = ceili(float(speed_max) / 4.0)
 var centrifugal = 11
 
+var fuel_max = speed_max * 1000
+var fuel = fuel_max
+
 var sky_speed = 0.01
 var horizon_far_speed = 0.015
 var horizon_near_speed = 0.03
@@ -56,22 +59,27 @@ func _process(delta):
 		$Area2D/AnimatedSprite2D.play("left")
 	else:
 		$Area2D/AnimatedSprite2D.play("straight")
-	if (
-		Input.is_action_pressed("accelerate") or
-		$Button_tilt_acc.z_index == 1 or
-		$Button_buttons_acc.z_index == 1
-		):
-		speed_current += acceleration
-		if speed_current > speed_max:
-			speed_current = speed_max
-	elif (
-			Input.is_action_pressed("brake") or
-			$Button_tilt_break.z_index == 1 or
-			$Button_buttons_break.z_index == 1
-		):
-		speed_current -= breaking
-		if speed_current < 0:
-			speed_current = 0
+	if fuel > 0:
+		if (
+			Input.is_action_pressed("accelerate") or
+			$Button_tilt_acc.z_index == 1 or
+			$Button_buttons_acc.z_index == 1
+			):
+			speed_current += acceleration
+			if speed_current > speed_max:
+				speed_current = speed_max
+		elif (
+				Input.is_action_pressed("brake") or
+				$Button_tilt_break.z_index == 1 or
+				$Button_buttons_break.z_index == 1
+			):
+			speed_current -= breaking
+			if speed_current < 0:
+				speed_current = 0
+		else:
+			speed_current -= decceleration
+			if speed_current < 0:
+				speed_current = 0
 	else:
 		speed_current -= decceleration
 		if speed_current < 0:
@@ -84,6 +92,11 @@ func _process(delta):
 
 	if velocity.length() > 0:
 		velocity = velocity * speed_current
+
+	fuel -= speed_current
+	if fuel <= 0:
+		fuel = 0
+	$Label_fuel/Label.text = "FUEL: " + str(fuel / (fuel_max / 100)) + "%"
 
 	$XPos.position += velocity * delta
 	$XPos.position.x -= player_segment.curve * speed_percent * centrifugal
