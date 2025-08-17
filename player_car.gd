@@ -100,6 +100,7 @@ func _process(delta):
 			speed_current = 0
 
 	if fuel <= 0 and speed_current <= 0:
+		$ColorRect_no_fuel/PointsText.text = "You got " + str(points) + " points"
 		$ColorRect_no_fuel.visible = true
 
 	if (($XPos.position.x < (-track_node.road_width / 2) or
