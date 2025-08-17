@@ -21,31 +21,27 @@ var horizon_near_speed = 0.03
 
 var screen_size = Vector2.ZERO
 
-var rewarded_ad: RewardedAd
-var full_screen_content_callback := FullScreenContentCallback.new()
-var on_user_earned_reward_listener := OnUserEarnedRewardListener.new()
+var rewarded_ad : RewardedAd
+var rewarded_ad_load_callback := RewardedAdLoadCallback.new()
 
 
 func _ready():
 	MobileAds.initialize()
-	full_screen_content_callback.on_ad_clicked = func():
-		print("on_ad_clicked")
-	full_screen_content_callback.on_ad_dismissed_full_screen_content = func() -> void:
-		print("on_ad_dismissed_full_screen_content")
-	full_screen_content_callback.on_ad_failed_to_show_full_screen_content = func(ad_error : AdError) -> void:
-		print("on_ad_failed_to_show_full_screen_content")
-	full_screen_content_callback.on_ad_impression = func() -> void:
-		print("on_ad_impression")
-	full_screen_content_callback.on_ad_showed_full_screen_content = func() -> void:
-		print("on_ad_showed_full_screen_content")
-	on_user_earned_reward_listener.on_user_earned_reward = func(rewarded_item : RewardedItem):
-		print("on_user_earned_reward, rewarded_item: rewarded", rewarded_item.amount, rewarded_item.type)
+	rewarded_ad_load_callback.on_ad_failed_to_load = on_rewarded_ad_failed_to_load
+	rewarded_ad_load_callback.on_ad_loaded = on_rewarded_ad_loaded
 	screen_size = get_viewport_rect().size
 	$ColorRect_no_fuel.position.x = (screen_size.x / 2) - ($ColorRect_no_fuel.size.x / 2)
 	$ColorRect_no_fuel.position.y = (screen_size.y / 2) - ($ColorRect_no_fuel.size.y / 2)
 	Globals.z_track_position = 0
 	$Area2D/AnimatedSprite2D.play("straight")
 	_set_control_scheme()
+	var unit_id : String
+	if OS.get_name() == "Android":
+		unit_id = "ca-app-pub-3940256099942544/6300978111"
+	elif OS.get_name() == "iOS":
+		unit_id = "ca-app-pub-3940256099942544/2934735716"
+	var ad_view := AdView.new(unit_id, AdSize.BANNER, AdPosition.Values.TOP)
+	ad_view.load_ad(AdRequest.new())
 
 
 func _process(delta):
@@ -262,33 +258,22 @@ func _on_end_game_pressed():
 	get_tree().quit()
 
 
+func on_rewarded_ad_failed_to_load(adError : LoadAdError) -> void:
+	print(adError.message)
+
+
+func on_rewarded_ad_loaded(rewarded_ad : RewardedAd) -> void:
+	self.rewarded_ad = rewarded_ad
+
+
 func _on_watch_ad_pressed():
-	print("_on_watch_ad_pressed() started")
-	print("rewarded_ad...")
-	if rewarded_ad:
-		print("found, destroying...")
-		rewarded_ad.destroy()
-		rewarded_ad = null
-		print("old rewarded_ad destroyed")
-	else:
-		print("not found")
-
-	var unit_id = "ca-app-pub-3940256099942544/5224354917"
-	print("unit_id set to", unit_id)
-
-	var rewarded_ad_load_callback := RewardedAdLoadCallback.new()
-	print("new rewarded_ad_load_callback.on_ad_failed_to_load created")
-	rewarded_ad_load_callback.on_ad_failed_to_load = func(adError : LoadAdError) -> void:
-		print(adError.message)
-
-	print("new rewarded_ad_load_callback.on_ad_loaded created")
-	rewarded_ad_load_callback.on_ad_loaded = func(rewarded_ad : RewardedAd) -> void:
-		print("rewarded ad loaded" + str(rewarded_ad._uid))
-		rewarded_ad = rewarded_ad
-		rewarded_ad.full_screen_content_callback = full_screen_content_callback
-
-	print("trying to load new ad...")
+	var unit_id : String
+	if OS.get_name() == "Android":
+		unit_id = "ca-app-pub-3940256099942544/5224354917"
+	elif OS.get_name() == "iOS":
+		unit_id = "ca-app-pub-3940256099942544/1712485313"
 	RewardedAdLoader.new().load(unit_id, AdRequest.new(), rewarded_ad_load_callback)
-
 	if rewarded_ad:
-		rewarded_ad.show(on_user_earned_reward_listener)
+		rewarded_ad.show()
+	else:
+		print("No ad to show. Display popup instead")
