@@ -13,6 +13,8 @@ var centrifugal = 11
 var fuel_max = speed_max * 1000
 var fuel = fuel_max
 
+var points = 0
+
 var sky_speed = 0.01
 var horizon_far_speed = 0.015
 var horizon_near_speed = 0.03
@@ -22,6 +24,8 @@ var screen_size = Vector2.ZERO
 
 func _ready():
 	screen_size = get_viewport_rect().size
+	$ColorRect_no_fuel.position.x = (screen_size.x / 2) - ($ColorRect_no_fuel.size.x / 2)
+	$ColorRect_no_fuel.position.y = (screen_size.y / 2) - ($ColorRect_no_fuel.size.y / 2)
 	Globals.z_track_position = 0
 	$Area2D/AnimatedSprite2D.play("straight")
 	_set_control_scheme()
@@ -84,6 +88,9 @@ func _process(delta):
 		speed_current -= decceleration
 		if speed_current < 0:
 			speed_current = 0
+
+	if fuel <= 0 and speed_current <= 0:
+		$ColorRect_no_fuel.visible = true
 
 	if (($XPos.position.x < (-track_node.road_width / 2) or
 		$XPos.position.x > track_node.road_width * 1.5) and
