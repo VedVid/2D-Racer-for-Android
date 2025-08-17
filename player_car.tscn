@@ -362,3 +362,4 @@ text = "End game"
 [connection signal="released" from="Button_buttons_left/Touch_buttons_left" to="." method="_on_touch_buttons_left_released"]
 [connection signal="pressed" from="Button_buttons_right/Touch_buttons_right" to="." method="_on_touch_buttons_right_pressed"]
 [connection signal="released" from="Button_buttons_right/Touch_buttons_right" to="." method="_on_touch_buttons_right_released"]
+[connection signal="pressed" from="ColorRect_no_fuel/EndGame" to="." method="_on_end_game_pressed"]

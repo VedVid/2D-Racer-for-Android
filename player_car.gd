@@ -242,3 +242,7 @@ func _on_button_debug_change_android_steering_pressed():
 		Globals.android_steering_scheme = Globals.android_steering_schemes[0]
 	$Button_debug_change_android_steering.text = Globals.android_steering_scheme
 	_set_control_scheme()
+
+
+func _on_end_game_pressed():
+	get_tree().quit()
