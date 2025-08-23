@@ -121,7 +121,7 @@ func _process(delta):
 func reset_road():
 	segments = []
 
-	add_straight(road.length.short, 2, 0)
+	add_straight(road.length.short, -1, -1)
 	add_s_curves()
 	add_straight(road.length.long, 2, 0)
 	add_curve(road.length.medium, road.curve.medium, 2, -1)
@@ -131,7 +131,7 @@ func reset_road():
 	add_curve(road.length.long, -road.curve.medium, 0, 2)
 	add_curve(road.length.long, road.curve.easy, 1, -1)
 	add_straight(null, -1, 0)
-	add_curve(road.length.short, -road.curve.hard, -1, -1)
+	add_curve(road.length.short, -road.curve.hard, -1, 1)
 	add_straight(road.length.long, 0, 2)
 	add_s_curves()
 	add_last_straight()

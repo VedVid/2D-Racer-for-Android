@@ -11,7 +11,7 @@ var offroad_limit = ceili(float(speed_max) / 4.0)
 var centrifugal = 11
 
 var fuel_max = speed_max * 2250
-var fuel = fuel_max / 2
+var fuel = fuel_max
 
 var points = 0
 
