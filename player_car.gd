@@ -10,8 +10,8 @@ var offroad_decceleration = ceili(float(speed_max) / 3.25 / 60.0)
 var offroad_limit = ceili(float(speed_max) / 4.0)
 var centrifugal = 11
 
-var fuel_max = speed_max * 1000
-var fuel = fuel_max
+var fuel_max = speed_max * 2250
+var fuel = fuel_max / 2
 
 var points = 0
 
@@ -120,33 +120,54 @@ func _process(delta):
 		velocity = velocity * speed_current
 
 	if speed_current > 0:
-		if player_segment.coin == 0:
-			if (
-				$XPos.position.x > (-track_node.road_width / 2) and
-				$XPos.position.x < (track_node.road_width / 3) - 185
-			):
+		if (
+			$XPos.position.x > (-track_node.road_width / 2) and
+			$XPos.position.x < (track_node.road_width / 3) - 185
+		):
+			if player_segment.coin == 0:
 				var value = speed_current / 50
 				if value <= 0:
 					value = 1
 				points += value
-		elif player_segment.coin == 1:
-			if (
-				$XPos.position.x > (track_node.road_width / 3) - 240 #and
-				#$XPos.position.x < (2 * (track_node.road_width / 3))
-			):
+			elif player_segment.fuel == 0:
+				var value = fuel_max / 300
+				if value <= 0:
+					value = 1
+				fuel += value
+				if fuel > fuel_max:
+					fuel = fuel_max
+		if (
+			$XPos.position.x > (track_node.road_width / 3) - 240 and
+			$XPos.position.x > ((track_node.road_width / 3) * 2.5) - 20
+		):
+			if player_segment.coin == 1:
 				var value = speed_current / 50
 				if value <= 0:
 					value = 1
 				points += value
-		elif player_segment.coin == 2:
-			if (
-				$XPos.position.x > ((track_node.road_width / 3) * 2.5) - 20 and
-				$XPos.position.x < track_node.road_width * 1.5
-			):
+			elif player_segment.fuel == 1:
+				var value = fuel_max / 300
+				if value <= 0:
+					value = 1
+				fuel += value
+				if fuel > fuel_max:
+					fuel = fuel_max
+		if (
+			$XPos.position.x > ((track_node.road_width / 3) * 2.5) - 20 and
+			$XPos.position.x < track_node.road_width * 1.5
+		):
+			if player_segment.coin == 2:
 				var value = speed_current / 50
 				if value <= 0:
 					value = 1
 				points += value
+			elif player_segment.fuel == 2:
+				var value = fuel_max / 300
+				if value <= 0:
+					value = 1
+				fuel += value
+				if fuel > fuel_max:
+					fuel = fuel_max
 	$Label_Points/Label.text = "Points: " + str(points)
 
 	fuel -= speed_current
