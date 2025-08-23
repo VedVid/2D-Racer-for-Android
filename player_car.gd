@@ -119,6 +119,36 @@ func _process(delta):
 	if velocity.length() > 0:
 		velocity = velocity * speed_current
 
+	if speed_current > 0:
+		if player_segment.coin == 0:
+			if (
+				$XPos.position.x > (-track_node.road_width / 2) and
+				$XPos.position.x < (track_node.road_width / 3) - 185
+			):
+				var value = speed_current / 50
+				if value <= 0:
+					value = 1
+				points += value
+		elif player_segment.coin == 1:
+			if (
+				$XPos.position.x > (track_node.road_width / 3) - 240 #and
+				#$XPos.position.x < (2 * (track_node.road_width / 3))
+			):
+				var value = speed_current / 50
+				if value <= 0:
+					value = 1
+				points += value
+		elif player_segment.coin == 2:
+			if (
+				$XPos.position.x > ((track_node.road_width / 3) * 2.5) - 20 and
+				$XPos.position.x < track_node.road_width * 1.5
+			):
+				var value = speed_current / 50
+				if value <= 0:
+					value = 1
+				points += value
+	$Label_Points/Label.text = "Points: " + str(points)
+
 	fuel -= speed_current
 	if fuel <= 0:
 		fuel = 0

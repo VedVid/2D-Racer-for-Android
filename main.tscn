@@ -6,7 +6,6 @@
 [node name="Main" type="Node"]
 
 [node name="Track" parent="." instance=ExtResource("1_0xm2m")]
-lanes = 3
 metadata/_edit_group_ = true
 
 [node name="PlayerCar" parent="." instance=ExtResource("2_h2yge")]
