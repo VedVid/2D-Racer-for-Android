@@ -5,13 +5,15 @@ var colors_light = {
 	"road": Color.ANTIQUE_WHITE,
 	"grass": Color.CHARTREUSE,
 	"rumble": Color.AZURE,
-	"lane": Color.CORNSILK
+	"lane": Color.CORNSILK,
+	"coin": Color.GOLDENROD
 }
 var colors_dark = {
 	"road": Color.BLANCHED_ALMOND,
 	"grass": Color.DARK_GREEN,
 	"rumble": Color.FIREBRICK,
-	"lane": Color.BLANCHED_ALMOND
+	"lane": Color.BLANCHED_ALMOND,
+	"coin": Color.GOLDENROD
 }
 var color_fog = Color.DARK_GRAY
 
@@ -100,6 +102,7 @@ func _draw():
 			segment.p2.screen.z,
 			segment.color,
 			segment.fog,
+			segment.coin
 		)
 
 		max_y = segment.p2.screen.y
@@ -115,18 +118,18 @@ func _process(delta):
 func reset_road():
 	segments = []
 
-	add_straight(road.length.short)
+	add_straight(road.length.short, 0)
 	add_s_curves()
-	add_straight(road.length.long)
-	add_curve(road.length.medium, road.curve.medium)
-	add_curve(road.length.long, road.curve.medium)
-	add_straight(road.length.long)
+	add_straight(road.length.long, 1)
+	add_curve(road.length.medium, road.curve.medium, 2)
+	add_curve(road.length.long, road.curve.medium, -1)
+	add_straight(road.length.long, -1)
 	add_s_curves()
-	add_curve(road.length.long, -road.curve.medium)
-	add_curve(road.length.long, road.curve.easy)
-	add_straight(null)
-	add_curve(road.length.short, -road.curve.hard)
-	add_straight(road.length.long)
+	add_curve(road.length.long, -road.curve.medium, -1)
+	add_curve(road.length.long, road.curve.easy, -1)
+	add_straight(null, -1)
+	add_curve(road.length.short, -road.curve.hard, -1)
+	add_straight(road.length.long, -1)
 	add_s_curves()
 	add_last_straight()
 
@@ -153,7 +156,7 @@ func project(p, camera_position):
 	p.screen.z = round(p.screen_scale * road_width  * screen_size.x / 2);
 
 
-func render_segment(width, llanes, x1, y1, w1, x2, y2, w2, colors, fog):
+func render_segment(width, llanes, x1, y1, w1, x2, y2, w2, colors, fog, coin):
 	var r1 = rumble_width(w1, llanes)
 	var r2 = rumble_width(w2, llanes)
 	var l1 = lane_marker_width(w1, llanes)
@@ -167,17 +170,51 @@ func render_segment(width, llanes, x1, y1, w1, x2, y2, w2, colors, fog):
 	var rect = Rect2(0, y2, width, y1-y2)
 	draw_rect(rect, colors.grass)
 
-	render_polygon(x1-w1-r1, y1, x1-w1, y1, x2-w2, y2, x2-w2-r2, y2, colors.rumble);
-	render_polygon(x1+w1+r1, y1, x1+w1, y1, x2+w2, y2, x2+w2+r2, y2, colors.rumble);
-	render_polygon(x1-w1, y1, x1+w1, y1, x2+w2, y2, x2-w2, y2, colors.road);
+	render_polygon(
+		x1-w1-r1, y1,
+		x1-w1, y1,
+		x2-w2, y2,
+		x2-w2-r2, y2, 
+		colors.rumble
+	)
+	render_polygon(
+		x1+w1+r1, y1,
+		x1+w1, y1,
+		x2+w2, y2,
+		x2+w2+r2, y2,
+		colors.rumble
+	)
+	render_polygon(
+		x1-w1, y1,
+		x1+w1, y1,
+		x2+w2, y2,
+		x2-w2, y2,
+		colors.road
+	)
 
-	lane_w1 = w1 * 2 / lanes;
-	lane_w2 = w2 * 2 / lanes;
-	lane_x1 = x1 - w1 + lane_w1;
-	lane_x2 = x2 - w2 + lane_w2;
+	lane_w1 = w1 * 2 / lanes
+	lane_w2 = w2 * 2 / lanes
+	lane_x1 = x1 - w1 + lane_w1
+	lane_x2 = x2 - w2 + lane_w2
 
 	for lane in lanes:
-		render_polygon(lane_x1-l1/2, y1, lane_x1+l1/2, y1, lane_x2+l2/2, y2, lane_x2-l2/2, y2, colors.lane)
+		render_polygon(
+			lane_x1-l1/2, y1,
+			lane_x1+l1/2, y1,
+			lane_x2+l2/2, y2,
+			lane_x2-l2/2, y2,
+			colors.lane
+		)
+
+		if lane == coin:
+				render_polygon(
+					(lane_x1-l1/2)-lane_w1, y1,
+					lane_x1+l1/2, y1,
+					lane_x2+l2/2, y2,
+					(lane_x2-l2/2)-lane_w2, y2,
+					colors.coin
+				)
+
 		lane_x1 += lane_w1
 		lane_x2 += lane_w2
 
@@ -218,7 +255,7 @@ func curve_ease_in_out(a, b, percent):
 	return a + (b - a) * ((-cos(percent * PI) / 2.0) + 0.5)
 
 
-func add_segment(curve):
+func add_segment(curve, coin):
 	var i = len(segments)
 	var new_segment = {
 		index = i,
@@ -237,7 +274,8 @@ func add_segment(curve):
 		color = colors_dark if floori(float(i)/rumble_length)%2 == 0 else colors_light,
 		looped = false,
 		fog = false,
-		curve = curve
+		curve = curve,
+		coin = coin
 	}
 	new_segment.p1.world.x = screen_size.x / 2
 	new_segment.p2.world.x = screen_size.x / 2
@@ -246,36 +284,38 @@ func add_segment(curve):
 	segments.append(new_segment)
 
 
-func add_road(enter, hold, leave, curve):
+func add_road(enter, hold, leave, curve, coin):
+	if coin > 2 or coin < -1:
+		coin = -1
 	for i1 in enter:
-		add_segment(curve_ease_in(0, curve, float(i1) / float(enter)))
+		add_segment(curve_ease_in(0, curve, float(i1) / float(enter)), coin)
 	for i2 in hold:
-		add_segment(curve_ease_in_out(curve, curve, float(i2) / float(hold)))
+		add_segment(curve_ease_in_out(curve, curve, float(i2) / float(hold)), coin)
 	for i3 in leave:
-		add_segment(curve_ease_out(curve, 0, float(i3) / float(leave)))
+		add_segment(curve_ease_out(curve, 0, float(i3) / float(leave)), coin)
 
 
-func add_straight(num):
+func add_straight(num, coin):
 	if not num:
 		num = road.length.medium
-	add_road(num, num, num, 0)
+	add_road(num, num, num, 0, coin)
 
 
 func add_last_straight():
-	add_road(200, 200, 200, 0)
+	add_road(200, 200, 200, 0, 0)
 
 
-func add_curve(num, curve):
+func add_curve(num, curve, coin):
 	if not num:
 		num = road.length.medium
 	if not curve:
 		num = road.curve.medium
-	add_road(num, num, num, curve)
+	add_road(num, num, num, curve, coin)
 
 
 func add_s_curves():
-	add_road(road.length.medium, road.length.medium, road.length.medium,  -road.curve.easy)
-	add_road(road.length.medium, road.length.medium, road.length.medium,   road.curve.medium)
-	add_road(road.length.medium, road.length.medium, road.length.medium,   road.curve.easy)
-	add_road(road.length.medium, road.length.medium, road.length.medium,  -road.curve.easy)
-	add_road(road.length.medium, road.length.medium, road.length.medium,  -road.curve.medium)
+	add_road(road.length.medium, road.length.medium, road.length.medium,  -road.curve.easy, -1)
+	add_road(road.length.medium, road.length.medium, road.length.medium,   road.curve.medium, -1)
+	add_road(road.length.medium, road.length.medium, road.length.medium,   road.curve.easy, -1)
+	add_road(road.length.medium, road.length.medium, road.length.medium,  -road.curve.easy, -1)
+	add_road(road.length.medium, road.length.medium, road.length.medium,  -road.curve.medium, -1)
