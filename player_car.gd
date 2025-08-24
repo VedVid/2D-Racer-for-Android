@@ -15,9 +15,9 @@ var fuel = fuel_max
 
 var points = 0
 
-var sky_speed = 0.01
-var horizon_far_speed = 0.015
-var horizon_near_speed = 0.03
+var sky_speed = 0 #0.01
+var horizon_far_speed = 0 #0.015
+var horizon_near_speed = 0 #0.03
 
 var screen_size = Vector2.ZERO
 
