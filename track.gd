@@ -5,7 +5,7 @@ var colors_light = {
 	"road": Color.ANTIQUE_WHITE,
 	"grass": Color.CHARTREUSE,
 	"rumble": Color.AZURE,
-	"lane": Color.CORNSILK,
+	"lane": Color.SLATE_GRAY,
 	"coin": Color.GOLDENROD,
 	"fuel": Color.FIREBRICK
 }
@@ -128,7 +128,7 @@ func reset_road():
 	add_curve(road.length.long, road.curve.medium, -1, 2)
 	add_straight(road.length.long, -1, -1)
 	add_s_curves()
-	add_curve(road.length.long, -road.curve.medium, 0, 2)
+	add_curve(road.length.long, -road.curve.medium, 2, 0)
 	add_curve(road.length.long, road.curve.easy, 1, -1)
 	add_straight(null, -1, 0)
 	add_curve(road.length.short, -road.curve.hard, -1, 1)
@@ -201,13 +201,14 @@ func render_segment(width, llanes, x1, y1, w1, x2, y2, w2, colors, fog, coin, fu
 	lane_x2 = x2 - w2 + lane_w2
 
 	for lane in lanes:
-		render_polygon(
-			lane_x1-l1/2, y1,
-			lane_x1+l1/2, y1,
-			lane_x2+l2/2, y2,
-			lane_x2-l2/2, y2,
-			colors.lane
-		)
+		if lane != lanes-1:
+			render_polygon(
+				lane_x1-l1/2, y1,
+				lane_x1+l1/2, y1,
+				lane_x2+l2/2, y2,
+				lane_x2-l2/2, y2,
+				colors.lane
+			)
 
 		if lane == coin or lane == fuel:
 			var color = colors.coin
