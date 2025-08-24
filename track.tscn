@@ -6,22 +6,23 @@
 [ext_resource type="Texture2D" uid="uid://b0yb0jn6au3o3" path="res://assets/hills_new.png" id="4_ucvjy"]
 
 [node name="Track" type="Node2D"]
+position = Vector2(0, -4)
 script = ExtResource("1_mll3j")
 
 [node name="Sky" type="Sprite2D" parent="."]
 z_index = -1
 texture = ExtResource("2_8nfsw")
 centered = false
-offset = Vector2(-110, 0)
+offset = Vector2(-860, 0)
 
 [node name="HorizonFar" type="Sprite2D" parent="."]
 z_index = -1
 texture = ExtResource("3_vr403")
 centered = false
-offset = Vector2(-110, 150)
+offset = Vector2(-860, 150)
 
 [node name="HorizonNear" type="Sprite2D" parent="."]
 z_index = -1
 texture = ExtResource("4_ucvjy")
 centered = false
-offset = Vector2(-110, 300)
+offset = Vector2(-860, 300)
