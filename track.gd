@@ -3,7 +3,7 @@ extends Node2D
 
 var colors_light = {
 	"road": Color.ANTIQUE_WHITE,
-	"grass": Color.CHARTREUSE,
+	"grass": Color.SEA_GREEN,
 	"rumble": Color.AZURE,
 	"lane": Color.SLATE_GRAY,
 	"coin": Color.GOLDENROD,
@@ -17,7 +17,7 @@ var colors_dark = {
 	"coin": Color.GOLDENROD,
 	"fuel": Color.FIREBRICK
 }
-var color_fog = Color.DARK_GRAY
+var color_fog = Color.from_string("#885132", Color.SADDLE_BROWN)
 
 var fog_density = 50
 
