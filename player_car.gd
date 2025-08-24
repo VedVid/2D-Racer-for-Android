@@ -49,6 +49,9 @@ func _ready():
 
 
 func _process(delta):
+	if $ColorRect_intro.visible == true:
+		return
+
 	var track_node = get_node("../Track")
 
 	var player_segment = track_node.find_segment(Globals.z_track_position + track_node.player_z)
@@ -347,3 +350,7 @@ func _on_watch_ad_pressed():
 
 func _on_button_pressed() -> void:
 	$ColorRect_no_fill.visible = false
+	
+
+func _on_intro_button_pressed() -> void:
+	$ColorRect_intro.visible = false
