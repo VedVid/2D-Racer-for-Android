@@ -415,9 +415,9 @@ horizontal_alignment = 1
 [node name="Button" type="Button" parent="ColorRect_intro"]
 layout_mode = 0
 offset_left = 132.0
-offset_top = 250.0
+offset_top = 240.0
 offset_right = 170.0
-offset_bottom = 282.0
+offset_bottom = 272.0
 text = "GO!"
 
 [connection signal="pressed" from="Button_debug_change_android_steering" to="." method="_on_button_debug_change_android_steering_pressed"]
