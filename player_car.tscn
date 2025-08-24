@@ -42,7 +42,7 @@ size = Vector2(141, 45)
 size = Vector2(141, 45)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0hd3m"]
-size = Vector2(60, 60)
+size = Vector2(90, 90)
 
 [node name="PlayerCar" type="Node2D"]
 script = ExtResource("1_gty54")
@@ -87,25 +87,25 @@ visible = false
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 3
 anchors_preset = 0
-offset_left = 1150.0
+offset_left = 1070.0
 offset_top = 500.0
-offset_right = 1210.0
-offset_bottom = 560.0
+offset_right = 1160.0
+offset_bottom = 590.0
 
 [node name="Touch_tilt_acc" type="TouchScreenButton" parent="Button_tilt_acc"]
-position = Vector2(30, 30)
+position = Vector2(45, 45)
 shape = SubResource("RectangleShape2D_0hd3m")
 
 [node name="ColorRect" type="ColorRect" parent="Button_tilt_acc"]
 layout_mode = 0
-offset_right = 60.0
-offset_bottom = 60.0
+offset_right = 90.0
+offset_bottom = 90.0
 color = Color(0.215902, 0.215902, 0.215902, 1)
 
 [node name="Label" type="Label" parent="Button_tilt_acc"]
 layout_mode = 0
-offset_right = 60.0
-offset_bottom = 60.0
+offset_right = 90.0
+offset_bottom = 90.0
 text = "ACC"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -115,25 +115,25 @@ visible = false
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 3
 anchors_preset = 0
-offset_left = 70.0
+offset_left = 120.0
 offset_top = 500.0
-offset_right = 130.0
-offset_bottom = 560.0
+offset_right = 210.0
+offset_bottom = 590.0
 
 [node name="Touch_tilt_break" type="TouchScreenButton" parent="Button_tilt_break"]
-position = Vector2(30, 30)
+position = Vector2(45, 45)
 shape = SubResource("RectangleShape2D_0hd3m")
 
 [node name="ColorRect" type="ColorRect" parent="Button_tilt_break"]
 layout_mode = 0
-offset_right = 60.0
-offset_bottom = 60.0
+offset_right = 90.0
+offset_bottom = 90.0
 color = Color(0.215902, 0.215902, 0.215902, 1)
 
 [node name="Label" type="Label" parent="Button_tilt_break"]
 layout_mode = 0
-offset_right = 60.0
-offset_bottom = 60.0
+offset_right = 90.0
+offset_bottom = 90.0
 text = "BREAK"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -143,25 +143,25 @@ visible = false
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 3
 anchors_preset = 0
-offset_left = 1110.0
+offset_left = 1005.0
 offset_top = 500.0
-offset_right = 1170.0
-offset_bottom = 560.0
+offset_right = 1095.0
+offset_bottom = 590.0
 
 [node name="Touch_buttons_acc" type="TouchScreenButton" parent="Button_buttons_acc"]
-position = Vector2(30, 30)
+position = Vector2(45, 45)
 shape = SubResource("RectangleShape2D_0hd3m")
 
 [node name="ColorRect" type="ColorRect" parent="Button_buttons_acc"]
 layout_mode = 0
-offset_right = 60.0
-offset_bottom = 60.0
+offset_right = 90.0
+offset_bottom = 90.0
 color = Color(0.215902, 0.215902, 0.215902, 1)
 
 [node name="Label" type="Label" parent="Button_buttons_acc"]
 layout_mode = 0
-offset_right = 60.0
-offset_bottom = 60.0
+offset_right = 90.0
+offset_bottom = 90.0
 text = "ACC"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -171,25 +171,25 @@ visible = false
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 3
 anchors_preset = 0
-offset_left = 1190.0
+offset_left = 1135.0
 offset_top = 500.0
-offset_right = 1250.0
-offset_bottom = 560.0
+offset_right = 1225.0
+offset_bottom = 590.0
 
 [node name="Touch_buttons_break" type="TouchScreenButton" parent="Button_buttons_break"]
-position = Vector2(30, 30)
+position = Vector2(45, 45)
 shape = SubResource("RectangleShape2D_0hd3m")
 
 [node name="ColorRect" type="ColorRect" parent="Button_buttons_break"]
 layout_mode = 0
-offset_right = 60.0
-offset_bottom = 60.0
+offset_right = 90.0
+offset_bottom = 90.0
 color = Color(0.215902, 0.215902, 0.215902, 1)
 
 [node name="Label" type="Label" parent="Button_buttons_break"]
 layout_mode = 0
-offset_right = 60.0
-offset_bottom = 60.0
+offset_right = 90.0
+offset_bottom = 90.0
 text = "BREAK"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -199,25 +199,25 @@ visible = false
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 3
 anchors_preset = 0
-offset_left = 30.0
+offset_left = 55.0
 offset_top = 500.0
-offset_right = 90.0
-offset_bottom = 560.0
+offset_right = 145.0
+offset_bottom = 590.0
 
 [node name="Touch_buttons_left" type="TouchScreenButton" parent="Button_buttons_left"]
-position = Vector2(30, 30)
+position = Vector2(45, 45)
 shape = SubResource("RectangleShape2D_0hd3m")
 
 [node name="ColorRect" type="ColorRect" parent="Button_buttons_left"]
 layout_mode = 0
-offset_right = 60.0
-offset_bottom = 60.0
+offset_right = 90.0
+offset_bottom = 90.0
 color = Color(0.215902, 0.215902, 0.215902, 1)
 
 [node name="Label" type="Label" parent="Button_buttons_left"]
 layout_mode = 0
-offset_right = 60.0
-offset_bottom = 60.0
+offset_right = 90.0
+offset_bottom = 90.0
 text = "LEFT"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -227,25 +227,25 @@ visible = false
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 3
 anchors_preset = 0
-offset_left = 110.0
+offset_left = 185.0
 offset_top = 500.0
-offset_right = 170.0
-offset_bottom = 560.0
+offset_right = 275.0
+offset_bottom = 590.0
 
 [node name="Touch_buttons_right" type="TouchScreenButton" parent="Button_buttons_right"]
-position = Vector2(30, 30)
+position = Vector2(45, 45)
 shape = SubResource("RectangleShape2D_0hd3m")
 
 [node name="ColorRect" type="ColorRect" parent="Button_buttons_right"]
 layout_mode = 0
-offset_right = 60.0
-offset_bottom = 60.0
+offset_right = 90.0
+offset_bottom = 90.0
 color = Color(0.215902, 0.215902, 0.215902, 1)
 
 [node name="Label" type="Label" parent="Button_buttons_right"]
 layout_mode = 0
-offset_right = 60.0
-offset_bottom = 60.0
+offset_right = 90.0
+offset_bottom = 90.0
 text = "RIGHT"
 horizontal_alignment = 1
 vertical_alignment = 1
